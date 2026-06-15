@@ -1,0 +1,21 @@
+---
+interface Props {
+  chapter: string;
+  eyebrow: string;
+  title: string;
+  center?: boolean;
+}
+const { chapter, eyebrow, title, center = false } = Astro.props;
+---
+
+<header class:list={["mb-14 md:mb-16 reveal", center && "text-center"]}>
+  <span class="block font-semibold leading-none tracking-[-0.03em] text-n-400 mb-3 text-[clamp(2.6rem,8vw,4.25rem)]">
+    {chapter}
+  </span>
+  <p class="text-[0.8125rem] font-medium tracking-[0.08em] uppercase text-accent-text mb-3.5">
+    {eyebrow}
+  </p>
+  <h2 class:list={["font-semibold tracking-[-0.02em] max-w-[22ch] text-[clamp(1.6rem,4.5vw,2.4rem)]", center && "mx-auto"]}>
+    {title}
+  </h2>
+</header>

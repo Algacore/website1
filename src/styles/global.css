@@ -1,0 +1,536 @@
+/* ============================================================
+   ALGACORE — global styles (Tailwind v4)
+   Brand tokens (Brand System v1.0) are mapped into @theme so they
+   generate utilities (bg-cyano-900, text-phyco-500 ...) and stay
+   available as CSS variables for hand-written rules.
+   ============================================================ */
+@import "tailwindcss";
+
+@theme {
+  /* ---- CYANO — deep teal-navy · biomass / structure ---- */
+  --color-cyano-50: #eef8fd;
+  --color-cyano-100: #d9edf8;
+  --color-cyano-200: #badcef;
+  --color-cyano-300: #96c3dd;
+  --color-cyano-400: #73a8c5;
+  --color-cyano-500: #588eab;
+  --color-cyano-600: #40748f;
+  --color-cyano-700: #2c5b73;
+  --color-cyano-800: #1b4255;
+  --color-cyano-900: #0f2e3d;
+
+  /* ---- PHYCO — vivid phycocyanin blue · the extract / highlight ---- */
+  --color-phyco-50: #eaf8ff;
+  --color-phyco-100: #d1eeff;
+  --color-phyco-200: #a5ddff;
+  --color-phyco-300: #73c5ff;
+  --color-phyco-400: #36a9f5;
+  --color-phyco-500: #008edd;
+  --color-phyco-600: #0073bc;
+  --color-phyco-700: #005996;
+  --color-phyco-800: #00416f;
+  --color-phyco-900: #002d4f;
+
+  /* ---- NEUTRAL — cool gray with a faint cyano cast ---- */
+  --color-n-50: #f8fbfc;
+  --color-n-100: #f0f5f7;
+  --color-n-200: #e2e8ec;
+  --color-n-300: #cbd3d7;
+  --color-n-400: #aeb6ba;
+  --color-n-500: #8e979b;
+  --color-n-600: #6e767a;
+  --color-n-700: #50585c;
+  --color-n-800: #353c3f;
+  --color-n-900: #1e2427;
+
+  /* ---- Semantic aliases ---- */
+  --color-ink: #0f2e3d;
+  --color-page: #f0f5f7;
+  --color-card: #ffffff;
+  --color-line: #e2e8ec;
+  --color-muted: #6e767a;
+  --color-accent: #008edd;
+  /* Phyco 500 only reaches ~3.3:1 on light at text sizes; use Phyco 700 for
+     text accents (~7:1) and reserve accent for graphic elements. */
+  --color-accent-text: #005996;
+
+  --font-sans: "Outfit", system-ui, sans-serif;
+  /* Fraunces — warm high-contrast serif for display headlines (editorial lift).
+     Outfit stays the voice of body, UI, labels, numbers and the wordmark. */
+  --font-serif: "Fraunces", "Iowan Old Style", Georgia, "Times New Roman", serif;
+
+  --radius-card: 3px;
+  --radius-sm-card: 3px;
+
+  /* Easing + durations shared with JS animation islands. */
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --shadow-card: 0 1px 2px rgba(15, 46, 61, 0.04), 0 8px 24px rgba(15, 46, 61, 0.05);
+  --shadow-card-hover: 0 2px 4px rgba(15, 46, 61, 0.06), 0 16px 40px rgba(15, 46, 61, 0.1);
+}
+
+/* Translucent channel triplets — used to derive on-accent tones in raw CSS. */
+:root {
+  --white-rgb: 255, 255, 255;
+  --ink-rgb: 15, 46, 61;
+  --on-accent: rgb(var(--white-rgb));
+  --on-accent-soft: rgba(var(--white-rgb), 0.82);
+  --on-accent-line: rgba(var(--white-rgb), 0.24);
+  --maxw: 1180px;
+  --maxw-narrow: 720px;
+  --gutter: 24px;
+}
+@media (min-width: 720px) {
+  :root {
+    --gutter: 32px;
+  }
+}
+
+/* ---------- Base ---------- */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+  /* Lenis drives scrolling; keep native smooth off when Lenis is active. */
+}
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  color: var(--color-ink);
+  background: var(--color-page);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+h1, h2, h3 {
+  margin: 0;
+  line-height: 1.15;
+}
+/* Display headlines: Fraunces, light, tight. Optical sizing lets the large
+   sizes pick up the high-contrast cut while small ones stay legible. */
+h1, h2, .font-display {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-optical-sizing: auto;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+}
+/* h3 and other small headings stay Outfit (clean UI voice). */
+h3 {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: justify;
+}
+p {
+  margin: 0;
+  text-align: justify;
+}
+p + p {
+  margin-top: 1.1em;
+}
+@layer base {
+  a {
+    color: var(--color-accent-text);
+    text-decoration: none;
+  }
+}
+a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+/* Emphasis in body copy rendered as a serif italic accent (the molecule names,
+   "phycocyanin" / "Arthrospira platensis") — a quiet editorial signature. */
+em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+:focus-visible {
+  outline-color: var(--color-accent);
+}
+
+/* ---------- Layout helpers ---------- */
+.container {
+  width: 100%;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.container--narrow {
+  max-width: var(--maxw-narrow);
+}
+
+.svg-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* Skip link — visible on focus only. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--color-ink);
+  color: var(--on-accent);
+  padding: 10px 16px;
+  border-radius: 0 0 3px 0;
+  font-weight: 500;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+/* ---------- Wordmark (live text) ---------- */
+.wm {
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.wm__alga {
+  color: var(--color-ink);
+}
+.wm__core {
+  color: var(--color-accent);
+}
+.wm--reversed .wm__alga {
+  color: var(--on-accent);
+}
+.wm--reversed .wm__core {
+  color: var(--color-phyco-300);
+}
+
+/* ---------- Scroll reveal (global IntersectionObserver, armed only with JS) ----------
+   Many cards reveal on scroll; a single observer + CSS classes keeps this light
+   (no per-card React root). Framer Motion is reserved for the richer islands. */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.7s var(--ease-brand),
+    transform 0.7s var(--ease-brand);
+  transition-delay: calc(var(--i, 0) * 70ms);
+  will-change: opacity, transform;
+}
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.section-pad {
+  padding-block: 72px;
+}
+@media (min-width: 720px) {
+  .section-pad {
+    padding-block: 96px;
+  }
+}
+@media (min-width: 880px) {
+  .section-pad {
+    padding-block: 120px;
+  }
+}
+
+/* ---------- Vertical rhythm ----------
+   One shared scale for separating major blocks inside a section, so every
+   section breathes on the same beat instead of each picking its own gap.
+   --block-lg: between a card grid and the next feature block (process flow,
+   comparison, spectrum, form). --block-md: a softer step for tighter pairs. */
+.block-gap-lg {
+  margin-top: clamp(48px, 6vw, 72px);
+}
+.block-gap-md {
+  margin-top: clamp(32px, 4vw, 48px);
+}
+
+/* ---------- Scroll progress bar ---------- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, var(--color-phyco-400), var(--color-phyco-300));
+  z-index: 60;
+  pointer-events: none;
+}
+
+/* ---------- Animated keyframes shared across components ---------- */
+@keyframes scrollCue {
+  0% { transform: translateY(-100%); }
+  60% { transform: translateY(100%); }
+  100% { transform: translateY(100%); }
+}
+
+/* Hero load choreography: staggered rise, armed only with JS so no-JS users
+   see content immediately. Reduced-motion collapses the duration to ~0. */
+@keyframes heroRise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+.js .hero-rise {
+  opacity: 0;
+  animation: heroRise 0.95s var(--ease-brand) both;
+  animation-delay: calc(var(--d, 0) * 1ms);
+}
+
+/* Premium film grain over saturated grounds. */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Coiled-filament linework (the helix, not a cell grid). */
+.filament-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.045;
+  background-size: 120px 80px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='80' viewBox='0 0 120 80'%3E%3Cg fill='none' stroke='%230f2e3d' stroke-width='1.5'%3E%3Cpath d='M0 26 Q15 6 30 26 T60 26 T90 26 T120 26'/%3E%3Cpath d='M0 54 Q15 74 30 54 T60 54 T90 54 T120 54'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ---------- Bento card primitive ---------- */
+.card {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  padding: 34px 30px;
+  box-shadow: var(--shadow-card);
+  transition:
+    transform 0.4s var(--ease-brand),
+    box-shadow 0.4s var(--ease-brand),
+    border-color 0.4s var(--ease-brand);
+}
+@media (hover: hover) {
+  .card.card--hover:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card-hover);
+    border-color: var(--color-n-300);
+  }
+}
+.section-alt {
+  background: var(--color-card);
+}
+.section-alt .card {
+  background: var(--color-n-50);
+}
+
+/* Custom select chevron (matches text inputs). */
+.select-chevron {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 40px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236e767a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+
+/* ============================================================
+   EDITORIAL DEPTH SYSTEM (v2)
+   Lifts the page from flat-SaaS to layered + atmospheric while staying
+   inside the brand palette. Additive: existing utilities still apply.
+   ============================================================ */
+:root {
+  --hairline: rgba(15, 46, 61, 0.08);
+  --shadow-float: 0 2px 6px rgba(15, 46, 61, 0.05), 0 28px 64px -20px rgba(15, 46, 61, 0.22);
+  --shadow-deep: 0 1px 2px rgba(15, 46, 61, 0.18), 0 40px 80px -28px rgba(7, 26, 35, 0.55);
+}
+
+/* A barely-there cyano/phyco wash to give light sections air and depth. */
+.atmos {
+  position: relative;
+  isolation: isolate;
+}
+.atmos::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(58% 46% at 88% -4%, rgba(0, 142, 221, 0.055), transparent 70%),
+    radial-gradient(46% 40% at -6% 104%, rgba(15, 46, 61, 0.045), transparent 72%);
+}
+
+/* Card refinement: tighter hairline, calmer rest shadow, floatier hover. */
+.card {
+  border-color: var(--hairline);
+}
+@media (hover: hover) {
+  .card.card--hover:hover {
+    box-shadow: var(--shadow-float);
+  }
+}
+/* A faint top sheen makes white cards feel like glass, not paper. */
+.card--sheen::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9) 30%, rgba(255, 255, 255, 0.9) 70%, transparent);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Deep cyano grounds: shared atmosphere + grain hooks live on .grain already. */
+.deep-ground {
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  background:
+    radial-gradient(120% 90% at 12% 6%, rgba(115, 197, 255, 0.12) 0%, transparent 46%),
+    linear-gradient(158deg, var(--color-cyano-900) 0%, var(--color-phyco-800) 64%, var(--color-phyco-700) 100%);
+}
+
+/* Consistent eyebrow label. */
+.eyebrow {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent-text);
+}
+.eyebrow--onDark {
+  color: var(--color-phyco-300);
+}
+
+/* Hero credibility chips. */
+.proof-chip {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.86rem;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  color: rgba(255, 255, 255, 0.88);
+  white-space: nowrap;
+}
+
+/* Process-diagram conduits: a faint track with a light pulse travelling along it. */
+.conduit {
+  position: relative;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.14);
+}
+.conduit--h {
+  width: 100%;
+  height: 2px;
+}
+.conduit--v {
+  width: 2px;
+  height: 30px;
+}
+.conduit::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, var(--color-phyco-300), transparent);
+}
+.conduit--v::before {
+  background: linear-gradient(180deg, transparent, var(--color-phyco-300), transparent);
+}
+.conduit--h::before {
+  width: 45%;
+  animation: conduitX 2.4s linear infinite;
+}
+.conduit--v::before {
+  height: 60%;
+  animation: conduitY 2s linear infinite;
+}
+.conduit[data-on="0"]::before {
+  animation-play-state: paused;
+  opacity: 0;
+}
+@keyframes conduitX {
+  from { transform: translateX(-120%); }
+  to { transform: translateX(360%); }
+}
+@keyframes conduitY {
+  from { transform: translateY(-120%); }
+  to { transform: translateY(160%); }
+}
+
+/* A hairline rule that fades at both ends, for editorial dividers. */
+.rule-fade {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(90deg, transparent, var(--color-line) 18%, var(--color-line) 82%, transparent);
+}
+.rule-fade--onDark {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18) 18%, rgba(255, 255, 255, 0.18) 82%, transparent);
+}
+
+/* Link with an animated underline that grows from the left. */
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1.5px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.45s var(--ease-brand);
+}
+@media (hover: hover) {
+  .link-underline:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

@@ -1,0 +1,30 @@
+---
+import Wordmark from "@/components/Wordmark.astro";
+interface Props {
+  copy: string;
+  mail: string;
+}
+const { copy, mail } = Astro.props;
+---
+
+<footer class="relative overflow-hidden bg-ink text-white py-14 grain">
+  <svg
+    class="pointer-events-none absolute -right-24 -bottom-28 w-[clamp(280px,42vw,520px)] text-white/[0.05]"
+    aria-hidden="true"
+    style="aspect-ratio:1015/664.5"
+    data-parallax="-0.06"
+  >
+    <use href="#mark"></use>
+  </svg>
+  <div class="container relative z-10 grid gap-6 md:grid-cols-[1fr_auto] md:items-center">
+    <a href="#top" aria-label="Algacore" class="inline-flex">
+      <Wordmark reversed class="text-[clamp(2.4rem,7vw,3.6rem)]" />
+    </a>
+    <div class="grid gap-1.5 md:justify-items-end md:text-right">
+      <p class="text-white/82 text-[0.92rem]">{copy}</p>
+      <a href={`mailto:${mail}`} class="text-phyco-300 text-[0.92rem] transition-opacity hover:opacity-75">
+        {mail}
+      </a>
+    </div>
+  </div>
+</footer>

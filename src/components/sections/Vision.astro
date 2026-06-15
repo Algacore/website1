@@ -1,0 +1,45 @@
+---
+import SectionHead from "@/components/SectionHead.astro";
+import ProcessFlow from "@/components/react/ProcessFlow.tsx";
+import type { SiteContent } from "@/lib/content";
+interface Props {
+  vision: SiteContent["vision"];
+}
+const { vision } = Astro.props;
+---
+
+<section id="vision" class="section-pad relative atmos">
+  <div class="container">
+    <SectionHead chapter="01" eyebrow={vision.eyebrow} title={vision.title} />
+
+    <div class="grid gap-5 md:gap-6 md:grid-cols-2">
+      <!-- Lead -->
+      <article class="card card--hover card--sheen reveal md:col-span-2" style="--i:0">
+        <div class="max-w-[64ch] text-ink text-[clamp(1.1rem,1.7vw,1.32rem)] leading-relaxed" set:html={vision.p1} />
+      </article>
+
+      <!-- Why phycocyanin -->
+      <article class="card card--hover card--sheen reveal" style="--i:1">
+        <h3 class="text-xl tracking-[-0.01em] mb-4">{vision.c1title}</h3>
+        <p class="text-muted">{vision.c1body}</p>
+      </article>
+
+      <!-- Why pharmaceutical-grade (accent) -->
+      <article class="card card--hover card--sheen reveal border-phyco-200!" style="--i:2">
+        <h3 class="text-xl tracking-[-0.01em] mb-4 text-accent-text">{vision.c2title}</h3>
+        <p class="text-muted">{vision.c2body}</p>
+      </article>
+    </div>
+
+    <!-- Signature: the cultivation-to-extraction process, animated. -->
+    <div class="block-gap-lg reveal">
+      <ProcessFlow
+        client:visible
+        eyebrow={vision.flowEyebrow}
+        title={vision.process}
+        stages={vision.stages}
+        notes={vision.flowNote}
+      />
+    </div>
+  </div>
+</section>

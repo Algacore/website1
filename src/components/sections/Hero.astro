@@ -1,0 +1,80 @@
+---
+import HeroCanvas from "@/components/react/HeroCanvas.tsx";
+import MagneticButton from "@/components/react/MagneticButton.tsx";
+import type { SiteContent } from "@/lib/content";
+interface Props {
+  hero: SiteContent["hero"];
+}
+const { hero } = Astro.props;
+---
+
+<section
+  id="hero"
+  class="deep-ground grain relative flex flex-col justify-center overflow-hidden min-h-svh pt-[112px] pb-[120px] text-white"
+>
+  <HeroCanvas client:load />
+
+  <!-- Giant translucent mark bleeding off the right edge (parallax depth). -->
+  <svg
+    class="pointer-events-none absolute top-1/2 -translate-y-1/2 right-[clamp(-260px,-14vw,-90px)] w-[clamp(460px,64vw,860px)] text-white/[0.05] z-[1]"
+    style="aspect-ratio:1015/664.5"
+    aria-hidden="true"
+    data-parallax="0.12"
+  >
+    <use href="#mark"></use>
+  </svg>
+
+  <div class="relative z-[2] w-full max-w-[var(--maxw)] mx-auto px-[var(--gutter)] min-w-0">
+    <!-- Eyebrow: small mark glyph + positioning line. -->
+    <div class="hero-rise flex items-center gap-3 mb-[clamp(26px,4vw,44px)]" style="--d:0">
+      <svg class="h-[18px] w-auto text-phyco-300" style="aspect-ratio:1015/664.5" aria-hidden="true">
+        <use href="#mark"></use>
+      </svg>
+      <span class="eyebrow eyebrow--onDark">{hero.eyebrow}</span>
+    </div>
+
+    <!-- Editorial split: title holds the left, support copy offsets lower-right. -->
+    <div class="grid gap-x-[clamp(32px,5vw,72px)] gap-y-[clamp(28px,4vw,40px)] lg:grid-cols-[1.5fr_1fr] lg:items-end">
+      <h1
+        class="hero-rise font-display text-white max-w-[14ch] text-[clamp(2.7rem,7.4vw,5.6rem)] leading-[1.02] tracking-[-0.025em]"
+        style="--d:90"
+        set:html={hero.title}
+      />
+
+      <div class="lg:pb-[8px]">
+        <p
+          class="hero-rise font-light leading-relaxed text-white/82 max-w-[44ch] text-[clamp(1.08rem,2.2vw,1.28rem)]"
+          style="--d:180"
+        >
+          {hero.sub}
+        </p>
+
+        <div class="hero-rise flex flex-wrap gap-3.5 mt-[clamp(26px,3.5vw,36px)]" style="--d:260">
+          <MagneticButton client:visible href="#connect" variant="solid" dataInterest="investor">
+            {hero.ctaInvest}
+          </MagneticButton>
+          <MagneticButton client:visible href="#connect" variant="ghost" dataInterest="partner">
+            {hero.ctaPartner}
+          </MagneticButton>
+        </div>
+      </div>
+    </div>
+
+    <!-- Credibility strip: full-width baseline rail of qualitative proof. -->
+    <div class="hero-rise mt-[clamp(44px,6vw,76px)]" style="--d:360">
+      <hr class="rule-fade rule-fade--onDark mb-[22px]" />
+      <ul class="list-none m-0 p-0 flex flex-wrap justify-center gap-x-[clamp(20px,4vw,44px)] gap-y-3">
+        {hero.proof.map((p) => (
+          <li class="proof-chip">{p}</li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Quiet scroll cue. -->
+  <a href="#vision" aria-hidden="true" tabindex="-1" class="absolute left-1/2 -translate-x-1/2 bottom-7 w-px h-14 overflow-hidden">
+    <span class="block w-px h-full bg-white/24 relative">
+      <span class="absolute inset-0 bg-white" style="animation: scrollCue 2.2s ease-in-out infinite;"></span>
+    </span>
+  </a>
+</section>

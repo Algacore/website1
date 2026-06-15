@@ -1,0 +1,95 @@
+---
+import SectionHead from "@/components/SectionHead.astro";
+import Counter from "@/components/react/Counter.tsx";
+import Spectrum from "@/components/react/Spectrum.tsx";
+import Wordmark from "@/components/Wordmark.astro";
+import type { SiteContent } from "@/lib/content";
+interface Props {
+  science: SiteContent["science"];
+}
+const { science } = Astro.props;
+
+// Parse the localized "~15%" string into prefix / number / suffix for the counter.
+const m = science.stat2num.match(/^(.*?)(\d+)(.*)$/);
+const stat2 = m ? { prefix: m[1], to: Number(m[2]), suffix: m[3] } : { prefix: "", to: 15, suffix: "%" };
+
+const sig = science.sig;
+---
+
+<section id="science" class="section-pad relative filament-bg">
+  <div class="container relative z-[1]">
+    <SectionHead chapter="03" eyebrow={science.eyebrow} title={science.title} />
+
+    <div class="grid gap-5 md:gap-6 md:grid-cols-6">
+      <!-- Stat 1 -->
+      <article class="card card--hover card--sheen reveal md:col-span-2 pt-[26px]" style="--i:0">
+        <span class="absolute top-0 left-0 w-14 h-1 bg-accent rounded-br-[3px]" aria-hidden="true"></span>
+        <Counter client:visible to={70} prefix="60-" suffix="%" />
+        <span class="block mt-3.5 text-muted max-w-[30ch]" set:html={science.stat1} />
+      </article>
+
+      <!-- Stat 2 -->
+      <article class="card card--hover card--sheen reveal md:col-span-2 pt-[26px]" style="--i:1">
+        <span class="absolute top-0 left-0 w-14 h-1 bg-accent rounded-br-[3px]" aria-hidden="true"></span>
+        <Counter client:visible to={stat2.to} prefix={stat2.prefix} suffix={stat2.suffix} />
+        <span class="block mt-3.5 text-muted max-w-[30ch]">{science.stat2}</span>
+      </article>
+
+      <!-- Stat 3 -->
+      <article class="card card--hover card--sheen reveal md:col-span-2 pt-[26px]" style="--i:2">
+        <span class="absolute top-0 left-0 w-14 h-1 bg-accent rounded-br-[3px]" aria-hidden="true"></span>
+        <Counter client:visible to={100} suffix="%" />
+        <span class="block mt-3.5 text-muted max-w-[30ch]">{science.stat3}</span>
+      </article>
+
+      <!-- Brand closer -->
+      <article
+        class="card reveal md:col-span-6 border-transparent! text-white flex flex-col justify-end min-h-[200px] md:min-h-[160px] md:flex-row md:items-center md:justify-between md:flex-wrap gap-4"
+        style="--i:3; background: linear-gradient(150deg, var(--color-cyano-900) 0%, var(--color-phyco-600) 100%);"
+      >
+        <svg
+          class="absolute -right-10 -bottom-12 text-white/[0.08] w-[clamp(220px,40%,320px)]"
+          style="aspect-ratio:1015/664.5"
+          aria-hidden="true"
+        >
+          <use href="#mark"></use>
+        </svg>
+        <Wordmark reversed class="relative z-[1] text-[clamp(1.8rem,4vw,2.4rem)]" />
+        <p class="relative z-[1] font-light max-w-[22ch] text-[clamp(1.2rem,2.4vw,1.6rem)]">
+          {science.accent}
+        </p>
+      </article>
+    </div>
+
+    <!-- Optical signature panel -->
+    <figure
+      class="block-gap-lg relative overflow-hidden rounded-[var(--radius-card)] text-white shadow-[var(--shadow-card)] grid gap-[18px] grain p-[clamp(22px,3.4vw,34px)] lg:grid-cols-[1.25fr_1fr] lg:items-center lg:gap-[clamp(28px,4vw,52px)] lg:p-[clamp(30px,3.2vw,44px)]"
+      style="background: linear-gradient(150deg, var(--color-cyano-900) 0%, var(--color-phyco-800) 68%, var(--color-phyco-700) 100%);"
+      aria-labelledby="sig-title"
+    >
+      <Spectrum client:visible alt={sig.alt} caption={sig.caption} peakLabel={sig.peakLabel} />
+
+      <div class="relative z-[1] min-w-0">
+        <p class="text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-phyco-300 mb-3">{sig.eyebrow}</p>
+        <h3 id="sig-title" class="font-semibold tracking-[-0.02em] mb-3.5 text-[clamp(1.4rem,2.6vw,1.85rem)]">{sig.title}</h3>
+        <p class="text-white/82 font-light max-w-[40ch] text-[1.02rem]">{sig.body}</p>
+
+        <dl class="mt-[clamp(18px,2.4vw,26px)] grid">
+          {
+            sig.rows.map((row, i) => (
+              <div
+                class={`grid grid-cols-[1fr_auto] items-baseline gap-x-4 gap-y-2.5 py-[13px] border-t border-white/[0.14] ${i === sig.rows.length - 1 ? "border-b" : ""}`}
+              >
+                <dt class="text-[0.84rem] font-medium text-white/82" style="letter-spacing:0.02em">{row.k}</dt>
+                <dd class="m-0 flex items-baseline gap-2.5 justify-self-end text-right">
+                  <span class="text-[1.02rem] font-semibold tracking-[-0.01em] tabular-nums text-white whitespace-nowrap">{row.v}</span>
+                  <span class="text-[0.64rem] font-semibold tracking-[0.08em] uppercase text-phyco-300 whitespace-nowrap">{row.note}</span>
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </figure>
+  </div>
+</section>

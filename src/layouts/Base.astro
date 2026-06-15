@@ -1,0 +1,76 @@
+---
+import "@/styles/global.css";
+import { getContent } from "@/lib/content";
+import { localeAttr, homePath, type Lang } from "@/i18n/config";
+import MarkDefs from "@/components/MarkDefs.astro";
+import Footer from "@/components/Footer.astro";
+import Nav from "@/components/react/Nav.tsx";
+import SiteEffects from "@/components/react/SiteEffects.tsx";
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const c = getContent(lang);
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).toString();
+const altLang = lang === "pt" ? "en" : "pt";
+---
+
+<!doctype html>
+<html lang={localeAttr[lang]}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{c.meta.title}</title>
+    <meta name="description" content={c.meta.desc} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="pt-BR" href={homePath("pt")} />
+    <link rel="alternate" hreflang="en" href={homePath("en")} />
+    <link rel="alternate" hreflang="x-default" href={homePath("pt")} />
+
+    <!-- Type system: Outfit (body/UI/wordmark) + Fraunces (serif display). -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Outfit:wght@300;400;500;600;700&display=swap"
+    />
+
+    <link rel="icon" type="image/svg+xml" href="/brand/svg/algacore-mark-phyco.svg" />
+
+    <!-- Social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={c.meta.title} />
+    <meta property="og:description" content={c.meta.desc} />
+    <meta property="og:locale" content={localeAttr[lang].replace("-", "_")} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Mark the document JS-capable before first paint so scroll-reveal styles
+         only apply when JS can drive them (no hidden content without JS). -->
+    <script is:inline>document.documentElement.classList.add("js");</script>
+  </head>
+  <body>
+    <div class="scroll-progress" aria-hidden="true"></div>
+    <a class="skip-link" href="#vision">{c.a11y.skip}</a>
+
+    <MarkDefs />
+
+    <Nav
+      client:load
+      lang={lang}
+      navTeam={c.nav.team}
+      navContact={c.nav.contact}
+      langLabel={c.langToggleLabel}
+      ptHref={homePath("pt")}
+      enHref={homePath("en")}
+    />
+
+    <main>
+      <slot />
+    </main>
+
+    <Footer copy={c.footer.copy} mail={c.footer.mail} />
+
+    <SiteEffects client:load />
+  </body>
+</html>

@@ -1,0 +1,54 @@
+---
+import type { SiteContent } from "@/lib/content";
+interface Props {
+  market: SiteContent["market"];
+}
+const { market } = Astro.props;
+---
+
+<section
+  id="market"
+  class="deep-ground grain relative overflow-hidden text-white py-[clamp(60px,9vw,120px)]"
+  aria-labelledby="market-title"
+>
+  <!-- Atmospheric mark for depth. -->
+  <svg
+    class="pointer-events-none absolute -left-28 -bottom-24 w-[clamp(280px,40vw,520px)] text-white/[0.045] z-0"
+    style="aspect-ratio:1015/664.5"
+    aria-hidden="true"
+    data-parallax="-0.05"
+  >
+    <use href="#mark"></use>
+  </svg>
+
+  <div class="container relative z-[1]">
+    <div class="md:flex md:items-end md:justify-between md:gap-12">
+      <div class="reveal">
+        <p class="eyebrow eyebrow--onDark mb-3.5">{market.eyebrow}</p>
+        <h2
+          id="market-title"
+          class="font-display text-white text-[clamp(1.9rem,4.4vw,3.1rem)] leading-[1.05] tracking-[-0.02em] max-w-[13ch]"
+        >
+          {market.title}
+        </h2>
+      </div>
+      <p class="reveal text-white/78 font-light leading-relaxed max-w-[44ch] text-[clamp(1.02rem,1.6vw,1.18rem)] mt-6 md:mt-0" style="--i:1">
+        {market.lede}
+      </p>
+    </div>
+
+    <hr class="rule-fade rule-fade--onDark my-[clamp(30px,5vw,52px)]" />
+
+    <div class="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        market.points.map((pt, i) => (
+          <div class="reveal" style={`--i:${i}`}>
+            <span class="block w-10 h-[3px] rounded-full bg-gradient-to-r from-phyco-300 to-phyco-400 mb-5" aria-hidden="true" />
+            <h3 class="text-white text-[1.12rem] font-medium tracking-[-0.01em] mb-4">{pt.title}</h3>
+            <p class="text-white/64 text-[0.96rem] leading-relaxed">{pt.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,12 @@
+---
+import Base from "@/layouts/Base.astro";
+import SiteSections from "@/components/SiteSections.astro";
+
+// Static content page — prerendered for speed. (The /api/contact endpoint
+// stays server-rendered.)
+export const prerender = true;
+---
+
+<Base lang="pt">
+  <SiteSections lang="pt" />
+</Base>

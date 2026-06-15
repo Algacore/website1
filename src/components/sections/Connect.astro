@@ -1,0 +1,40 @@
+---
+import SectionHead from "@/components/SectionHead.astro";
+import ContactForm from "@/components/react/ContactForm.tsx";
+import type { SiteContent } from "@/lib/content";
+import type { Lang } from "@/i18n/config";
+interface Props {
+  connect: SiteContent["connect"];
+  form: SiteContent["form"];
+  lang: Lang;
+}
+const { connect, form, lang } = Astro.props;
+---
+
+<section id="connect" class="section-pad section-alt relative atmos">
+  <div class="container">
+    <SectionHead chapter="06" eyebrow={connect.eyebrow} title={connect.title} />
+    <p class="text-muted mb-10 max-w-[54ch] text-[1.075rem] reveal">{connect.lede}</p>
+
+    <div class="grid gap-5 md:grid-cols-2 md:gap-6">
+      <article class="card card--hover card--sheen reveal flex flex-col items-start hover:border-phyco-200!" style="--i:0">
+        <h3 class="text-[1.3rem] tracking-[-0.01em] mb-4">{connect.investTitle}</h3>
+        <p class="text-muted mb-[18px]">{connect.investBody}</p>
+        <a href="#interest-form" data-interest="investor" class="font-medium text-accent-text hover:underline underline-offset-[3px]">
+          {connect.investCta}
+        </a>
+      </article>
+      <article class="card card--hover card--sheen reveal flex flex-col items-start hover:border-phyco-200!" style="--i:1">
+        <h3 class="text-[1.3rem] tracking-[-0.01em] mb-4" set:html={connect.partnerTitle} />
+        <p class="text-muted mb-[18px]">{connect.partnerBody}</p>
+        <a href="#interest-form" data-interest="partner" class="font-medium text-accent-text hover:underline underline-offset-[3px]">
+          {connect.partnerCta}
+        </a>
+      </article>
+    </div>
+
+    <div class="block-gap-md reveal">
+      <ContactForm client:visible copy={form} lang={lang} />
+    </div>
+  </div>
+</section>

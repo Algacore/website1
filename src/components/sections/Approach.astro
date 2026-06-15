@@ -1,0 +1,52 @@
+---
+import SectionHead from "@/components/SectionHead.astro";
+import Compare from "@/components/react/Compare.tsx";
+import type { SiteContent } from "@/lib/content";
+interface Props {
+  approach: SiteContent["approach"];
+}
+const { approach } = Astro.props;
+---
+
+<section id="approach" class="section-pad section-alt relative atmos">
+  <div class="container">
+    <SectionHead chapter="02" eyebrow={approach.eyebrow} title={approach.title} />
+
+    <div class="grid gap-5 md:gap-6 md:grid-cols-3">
+      {
+        approach.cards.map((card, i) => (
+          <article
+            class={`card card--hover card--sheen reveal ${i === 2 ? "border-phyco-200!" : ""}`}
+            style={`--i:${i}`}
+          >
+            <h3 class={`text-xl tracking-[-0.01em] mb-4 ${i === 2 ? "text-accent-text" : ""}`}>
+              {card.title}
+            </h3>
+            <p class="text-muted">{card.body}</p>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="block-gap-lg reveal">
+      <div class="max-w-[48ch] mb-[clamp(20px,3vw,30px)]">
+        <h3 class="font-semibold tracking-[-0.02em] mb-3 text-[clamp(1.4rem,2.6vw,1.85rem)]">
+          {approach.compareTitle}
+        </h3>
+        <p class="text-muted max-w-[46ch] text-[1.02rem]">{approach.compareLede}</p>
+      </div>
+
+      <Compare
+        client:visible
+        pondAlt={approach.pondAlt}
+        pondTag={approach.pondTag}
+        pondLabel={approach.pondLabel}
+        pond={approach.pond}
+        pbrAlt={approach.pbrAlt}
+        pbrTag={approach.pbrTag}
+        pbrLabel={approach.pbrLabel}
+        pbr={approach.pbr}
+      />
+    </div>
+  </div>
+</section>

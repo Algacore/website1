@@ -1,0 +1,50 @@
+/* ============================================================
+   ALGACORE — Brand Design Tokens
+   Source: Claude Design handoff (Brand System v1.0)
+   ============================================================ */
+
+:root {
+  /* CYANO — deep teal-navy · algae biomass / primary structure */
+  --cyano-50:  #eef8fd;
+  --cyano-100: #d9edf8;
+  --cyano-200: #badcef;
+  --cyano-300: #96c3dd;
+  --cyano-400: #73a8c5;
+  --cyano-500: #588eab;
+  --cyano-600: #40748f;
+  --cyano-700: #2c5b73;
+  --cyano-800: #1b4255;
+  --cyano-900: #0f2e3d; /* ★ core — primary mark, "alga", body ink */
+
+  /* PHYCO — vivid phycocyanin blue · the extract / the highlight */
+  --phyco-50:  #eaf8ff;
+  --phyco-100: #d1eeff;
+  --phyco-200: #a5ddff;
+  --phyco-300: #73c5ff; /* reversed "core" on dark grounds */
+  --phyco-400: #36a9f5;
+  --phyco-500: #008edd; /* ★ core — "core" highlight, accents, links */
+  --phyco-600: #0073bc;
+  --phyco-700: #005996;
+  --phyco-800: #00416f;
+  --phyco-900: #002d4f;
+
+  /* NEUTRAL — cool gray with a faint cyano cast · surfaces & text */
+  --n-50:  #f8fbfc;
+  --n-100: #f0f5f7;
+  --n-200: #e2e8ec;
+  --n-300: #cbd3d7;
+  --n-400: #aeb6ba;
+  --n-500: #8e979b;
+  --n-600: #6e767a;
+  --n-700: #50585c;
+  --n-800: #353c3f;
+  --n-900: #1e2427;
+
+  /* Semantic aliases */
+  --ink:   var(--cyano-900);
+  --page:  var(--n-100);
+  --card:  #ffffff;
+  --line:  var(--n-200);
+  --muted: var(--n-600);
+  --accent: var(--phyco-500);
+}

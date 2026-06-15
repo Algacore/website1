@@ -1,0 +1,16 @@
+---
+import type { SiteContent } from "@/lib/content";
+interface Props {
+  band: SiteContent["band"];
+}
+const { band } = Astro.props;
+---
+
+<section class="bg-card border-b border-line py-9" aria-label="Algacore">
+  <div class="container flex flex-col gap-5 md:flex-row md:items-center md:justify-between md:gap-10">
+    <img src="/brand/svg/algacore-lockup-horizontal.svg" alt="Algacore" class="h-[clamp(40px,6vw,56px)] w-auto reveal" />
+    <p class="text-muted font-light max-w-[48ch] md:text-right text-[clamp(1rem,2vw,1.15rem)] reveal" style="--i:1">
+      {band.tagline}
+    </p>
+  </div>
+</section>

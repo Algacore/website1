@@ -1,0 +1,44 @@
+---
+import SectionHead from "@/components/SectionHead.astro";
+import type { SiteContent } from "@/lib/content";
+interface Props {
+  team: SiteContent["team"];
+}
+const { team } = Astro.props;
+---
+
+<section id="team" class="section-pad relative atmos border-t border-line">
+  <div class="container">
+    <SectionHead chapter="05" eyebrow={team.eyebrow} title={team.title} />
+
+    <p class="text-muted mb-10 max-w-[56ch] text-[1.075rem] reveal">{team.lede}</p>
+
+    <div class="grid gap-5 md:gap-6 md:grid-cols-2">
+      {
+        team.members.map((m, i) => (
+          <article class="card card--hover card--sheen reveal flex flex-col items-start group" style={`--i:${i}`}>
+            <img
+              src={m.photo}
+              alt={m.name}
+              width="120"
+              height="120"
+              loading="lazy"
+              decoding="async"
+              class="w-28 h-28 rounded-full object-cover mb-[22px] shadow-[0_0_0_4px_var(--color-n-50),0_0_0_6px_var(--color-phyco-200)]"
+            />
+            <h3 class="text-[1.3rem] tracking-[-0.01em] mb-1.5">{m.name}</h3>
+            <p class="text-[0.75rem] font-semibold tracking-[0.08em] uppercase text-accent-text mb-3">{m.role}</p>
+            <p class="text-[0.92rem] font-medium text-ink mb-3">{m.cred}</p>
+            <p class="text-muted">{m.bio}</p>
+            <a
+              href={`mailto:${m.mail}`}
+              class="mt-[18px] text-[0.92rem] font-medium text-accent-text break-words group-hover:underline underline-offset-2 after:absolute after:inset-0 after:rounded-[inherit] after:content-['']"
+            >
+              {m.mail}
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

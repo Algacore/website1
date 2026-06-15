@@ -1,0 +1,14 @@
+---
+// Live-text wordmark: "alga" in ink, "core" in Phyco. Set in Outfit Medium,
+// tracked -2% per the brand spec. `reversed` flips it for dark grounds
+// (alga white / core Phyco 300).
+interface Props {
+  reversed?: boolean;
+  class?: string;
+}
+const { reversed = false, class: className = "" } = Astro.props;
+---
+
+<span class={`wm ${reversed ? "wm--reversed" : ""} ${className}`} aria-hidden="true">
+  <span class="wm__alga">alga</span><span class="wm__core">core</span>
+</span>
