@@ -49,11 +49,10 @@ export default function ContactForm({ copy, lang }: { copy: FormCopy; lang: "pt"
     }
     setStatus("sending");
     try {
-      const data = Object.fromEntries(new FormData(form).entries());
-      const res = await fetch("/api/contact", {
+      const res = await fetch("https://formspree.io/f/mykaoooz", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, lang }),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ ...Object.fromEntries(new FormData(form).entries()), lang }),
       });
       if (!res.ok) throw new Error("bad status");
       setStatus("ok");
