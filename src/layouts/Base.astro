@@ -23,6 +23,7 @@ const altLang = lang === "pt" ? "en" : "pt";
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{c.meta.title}</title>
     <meta name="description" content={c.meta.desc} />
+    <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="pt-BR" href={homePath("pt")} />
     <link rel="alternate" hreflang="en" href={homePath("en")} />
@@ -51,22 +52,41 @@ const altLang = lang === "pt" ? "en" : "pt";
     <meta name="twitter:image" content="https://www.algacore.com.br/brand/png/algacore-lockup-stacked.png" />
 
     <!-- Structured data -->
-    <script type="application/ld+json" set:html={JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Algacore",
-      "legalName": "ALGACORE Biotecnologia Ltda",
-      "url": "https://www.algacore.com.br",
-      "logo": "https://www.algacore.com.br/brand/png/algacore-lockup-stacked.png",
-      "description": lang === "pt"
-        ? "Biotecnologia B2B cultivando spirulina em fotobiorreatores fechados para extração de ficocianina de alto grau e rastreável, em escala industrial, no Brasil."
-        : "B2B biotechnology company cultivating spirulina in closed photobioreactors to extract high-grade, traceable phycocyanin at industrial scale in Brazil.",
-      "email": "contato@algacore.com.br",
-      "foundingDate": "2024",
-      "areaServed": "BR",
-      "industry": "Biotechnology",
-      "sameAs": []
-    })} />
+    <script type="application/ld+json" set:html={JSON.stringify([
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Algacore",
+        "legalName": "ALGACORE Biotecnologia Ltda",
+        "url": "https://www.algacore.com.br",
+        "logo": "https://www.algacore.com.br/brand/png/algacore-lockup-stacked.png",
+        "description": lang === "pt"
+          ? "Fornecedor B2B de ficocianina de alto grau, cultivada em fotobiorreatores fechados no Brasil, rumo ao padrão farmacêutico."
+          : "B2B supplier of high-grade phycocyanin cultivated in closed photobioreactors in Brazil, building toward a pharmaceutical standard.",
+        "email": "contato@algacore.com.br",
+        "foundingDate": "2024",
+        "areaServed": ["BR", "LATAM"],
+        "knowsAbout": ["phycocyanin", "spirulina", "photobioreactor", "ficocianina", "biotechnology"],
+        "sameAs": []
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Algacore",
+        "url": "https://www.algacore.com.br"
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": lang === "pt" ? "Ficocianina de alto grau B2B" : "High-grade phycocyanin B2B supply",
+        "provider": { "@type": "Organization", "name": "Algacore" },
+        "description": lang === "pt"
+          ? "Fornecimento B2B de ficocianina rastreável extraída de spirulina cultivada em fotobiorreatores fechados, em escala industrial no Brasil."
+          : "B2B supply of traceable phycocyanin extracted from spirulina cultivated in closed photobioreactors at industrial scale in Brazil.",
+        "areaServed": "BR",
+        "serviceType": lang === "pt" ? "Ingrediente biotecnológico B2B" : "B2B biotechnology ingredient"
+      }
+    ])} />
 
     <!-- Mark the document JS-capable before first paint so scroll-reveal styles
          only apply when JS can drive them (no hidden content without JS). -->
