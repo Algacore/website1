@@ -14,6 +14,8 @@ const { lang } = Astro.props;
 const c = getContent(lang);
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).toString();
 const altLang = lang === "pt" ? "en" : "pt";
+const origin = Astro.site ?? new URL(Astro.url.origin);
+const absHome = (l: Lang) => new URL(homePath(l), origin).toString();
 ---
 
 <!doctype html>
@@ -25,9 +27,9 @@ const altLang = lang === "pt" ? "en" : "pt";
     <meta name="description" content={c.meta.desc} />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang="pt-BR" href={homePath("pt")} />
-    <link rel="alternate" hreflang="en" href={homePath("en")} />
-    <link rel="alternate" hreflang="x-default" href={homePath("pt")} />
+    <link rel="alternate" hreflang="pt-BR" href={absHome("pt")} />
+    <link rel="alternate" hreflang="en" href={absHome("en")} />
+    <link rel="alternate" hreflang="x-default" href={absHome("pt")} />
 
     <!-- Type system: Outfit (body/UI/wordmark) + Fraunces (serif display). -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -38,18 +40,27 @@ const altLang = lang === "pt" ? "en" : "pt";
     />
 
     <link rel="icon" type="image/svg+xml" href="/brand/svg/algacore-mark-phyco.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <!-- Social -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Algacore" />
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={c.meta.title} />
     <meta property="og:description" content={c.meta.desc} />
     <meta property="og:locale" content={localeAttr[lang].replace("-", "_")} />
-    <meta property="og:image" content="https://algacore.com.br/brand/png/algacore-lockup-stacked.png" />
+    <meta property="og:locale:alternate" content={localeAttr[altLang].replace("-", "_")} />
+    <meta property="og:image" content="https://algacore.com.br/brand/og/og-card.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Algacore" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={c.meta.title} />
     <meta name="twitter:description" content={c.meta.desc} />
-    <meta name="twitter:image" content="https://algacore.com.br/brand/png/algacore-lockup-stacked.png" />
+    <meta name="twitter:image" content="https://algacore.com.br/brand/og/og-card.png" />
+    <meta name="twitter:image:alt" content="Algacore" />
 
     <!-- Structured data -->
     <script type="application/ld+json" set:html={JSON.stringify([
@@ -57,6 +68,7 @@ const altLang = lang === "pt" ? "en" : "pt";
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "Algacore",
+        "alternateName": ["Alga Core", "Core Alga", "AlgaCore", "Algacore Biotecnologia", "Algacore Ficocianina"],
         "legalName": "ALGACORE Biotecnologia Ltda",
         "url": "https://algacore.com.br",
         "logo": "https://algacore.com.br/brand/png/algacore-lockup-stacked.png",
@@ -73,6 +85,7 @@ const altLang = lang === "pt" ? "en" : "pt";
         "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "Algacore",
+        "alternateName": ["Alga Core", "Core Alga", "Algacore Ficocianina"],
         "url": "https://algacore.com.br"
       },
       {
