@@ -121,7 +121,7 @@ export interface SiteContent {
 const pt: SiteContent = {
   meta: {
     title: "Ficocianina Farmacêutica | Algacore Biotecnologia B2B",
-    desc: "Fornecedor B2B de ficocianina de alto grau e rastreável, cultivada em fotobiorreatores fechados no Brasil. Spirulina em escala industrial, rumo ao padrão farmacêutico e ANVISA GMP.",
+    desc: "Algacore (Alga Core) é fornecedora B2B de ficocianina de alto grau e rastreável, cultivada em fotobiorreatores fechados no Brasil. Spirulina em escala industrial, rumo ao padrão farmacêutico e ANVISA GMP.",
   },
   a11y: { skip: "Pular para o conteúdo" },
   nav: { team: "Quem somos", contact: "Contato" },
@@ -322,7 +322,7 @@ const pt: SiteContent = {
 const en: SiteContent = {
   meta: {
     title: "Pharmaceutical Phycocyanin Supplier | Algacore B2B Biotech",
-    desc: "B2B supplier of high-grade, traceable phycocyanin from closed photobioreactors in Brazil. Industrial-scale spirulina cultivation building toward pharmaceutical purity and ANVISA GMP.",
+    desc: "Algacore (Alga Core) is a B2B supplier of high-grade, traceable phycocyanin from closed photobioreactors in Brazil. Industrial-scale spirulina cultivation building toward pharmaceutical purity and ANVISA GMP.",
   },
   a11y: { skip: "Skip to content" },
   nav: { team: "Who we are", contact: "Contact" },
