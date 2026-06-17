@@ -40,10 +40,33 @@ const altLang = lang === "pt" ? "en" : "pt";
 
     <!-- Social -->
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={c.meta.title} />
     <meta property="og:description" content={c.meta.desc} />
     <meta property="og:locale" content={localeAttr[lang].replace("-", "_")} />
+    <meta property="og:image" content="https://www.algacore.com.br/brand/png/algacore-lockup-stacked.png" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={c.meta.title} />
+    <meta name="twitter:description" content={c.meta.desc} />
+    <meta name="twitter:image" content="https://www.algacore.com.br/brand/png/algacore-lockup-stacked.png" />
+
+    <!-- Structured data -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Algacore",
+      "legalName": "ALGACORE Biotecnologia Ltda",
+      "url": "https://www.algacore.com.br",
+      "logo": "https://www.algacore.com.br/brand/png/algacore-lockup-stacked.png",
+      "description": lang === "pt"
+        ? "Biotecnologia B2B cultivando spirulina em fotobiorreatores fechados para extração de ficocianina de alto grau e rastreável, em escala industrial, no Brasil."
+        : "B2B biotechnology company cultivating spirulina in closed photobioreactors to extract high-grade, traceable phycocyanin at industrial scale in Brazil.",
+      "email": "contato@algacore.com.br",
+      "foundingDate": "2024",
+      "areaServed": "BR",
+      "industry": "Biotechnology",
+      "sameAs": []
+    })} />
 
     <!-- Mark the document JS-capable before first paint so scroll-reveal styles
          only apply when JS can drive them (no hidden content without JS). -->
