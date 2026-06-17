@@ -5,7 +5,7 @@ import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  site: "https://www.algacore.com.br",
+  site: "https://algacore.com.br",
   output: "static",
   i18n: {
     defaultLocale: "pt",

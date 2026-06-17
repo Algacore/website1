@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.algacore.com.br/sitemap-index.xml
+Sitemap: https://algacore.com.br/sitemap-index.xml
