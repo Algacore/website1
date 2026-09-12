@@ -387,7 +387,7 @@ const pt: SiteContent = {
       },
       {
         q: "Como falar com os fundadores?",
-        a: "Pelo formulário no fim desta página ou por contato@algacore.com.br. Vale repetir: nada neste site é oferta de investimento ou de produto.",
+        a: "Pelo formulário no fim desta página ou por contato@algacore.com.br.",
       },
     ],
   },
@@ -761,7 +761,7 @@ const en: SiteContent = {
       },
       {
         q: "How do we talk to the founders?",
-        a: "Through the form at the end of this page or via contato@algacore.com.br. Worth repeating: nothing on this site is an offer of investment or of any product.",
+        a: "Through the form at the end of this page or via contato@algacore.com.br.",
       },
     ],
   },
