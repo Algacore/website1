@@ -1,0 +1,48 @@
+---
+import Base from "@/layouts/Base.astro";
+import { getContent } from "@/lib/content";
+import { homePath } from "@/i18n/config";
+
+export const prerender = true;
+
+// Hosts serve the root 404 for every path, so this page answers in Portuguese
+// first and carries one English line for visitors coming from /en/.
+const pt = getContent("pt").notFound;
+const en = getContent("en").notFound;
+---
+
+<Base
+  lang="pt"
+  title={`${pt.title} | Algacore`}
+  description={pt.body}
+  skipTarget="#notfound"
+>
+  <section id="notfound" class="section-pad relative atmos min-h-[70svh] flex items-center">
+    <div class="container">
+      <div class="max-w-[var(--maxw-narrow)]">
+        <span class="block font-semibold leading-none tracking-[-0.03em] text-n-400 mb-4 text-[clamp(3.4rem,12vw,6rem)]">
+          404
+        </span>
+        <h1 class="font-display text-[clamp(1.9rem,5vw,2.8rem)] tracking-[-0.02em] mb-4">
+          {pt.title}
+        </h1>
+        <p class="text-muted text-[1.075rem] max-w-[52ch] mb-8">{pt.body}</p>
+
+        <a
+          href={homePath("pt")}
+          class="inline-flex items-center gap-2 rounded-[3px] px-[26px] py-[14px] text-base font-medium bg-ink text-white transition-colors hover:bg-cyano-800"
+        >
+          {pt.cta}
+          <svg class="h-[15px] w-[15px] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6"></path>
+          </svg>
+        </a>
+
+        <p class="mt-10 pt-6 border-t border-line text-muted text-[0.95rem]" lang="en">
+          {en.body}{" "}
+          <a href={homePath("en")} class="text-accent-text underline underline-offset-[3px]">{en.cta}</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>

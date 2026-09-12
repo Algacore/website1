@@ -1,0 +1,177 @@
+---
+interface Step {
+  status: string;
+  title: string;
+  body: string;
+}
+interface Props {
+  steps: Step[];
+}
+
+const { steps } = Astro.props;
+const nums = ["01", "02", "03", "04", "05"];
+---
+
+<div data-roadmap>
+  <!-- Desktop: horizontal timeline -->
+  <div class="hidden md:block relative">
+    <div class="absolute top-[20px] left-[16.667%] right-[16.667%] h-[2px] bg-line overflow-hidden rounded-full">
+      <div class="rm-line h-full w-full bg-gradient-to-r from-phyco-400 to-accent origin-left" data-rm-line></div>
+    </div>
+    <div class="grid grid-cols-3 gap-5">
+      {steps.map((step, i) => (
+        <div class="flex flex-col">
+          <div class="flex justify-center mb-8 h-[26px] items-center">
+            <span class="relative inline-flex">
+              {i === 0 && <span class="rm-pulse absolute inset-0 rounded-full bg-accent/30" data-rm-pulse></span>}
+              <span
+                class:list={[
+                  "rm-dot relative block w-[14px] h-[14px] rounded-full border-2",
+                  i === 0 ? "bg-accent border-accent" : "bg-card border-phyco-300",
+                ]}
+                style={`box-shadow: ${i === 0 ? "0 0 0 5px rgba(0,142,221,0.14)" : "0 0 0 5px var(--color-page)"}`}
+                data-rm-dot={i}
+              ></span>
+            </span>
+          </div>
+          <article class:list={["card card--hover card--sheen pt-[26px] h-full", i === 0 && "border-phyco-300!"]}>
+            <span class:list={["block text-[2.4rem] font-semibold leading-none tracking-[-0.03em] mb-4 tabular-nums", i === 0 ? "text-accent" : "text-phyco-200"]}>
+              {nums[i]}
+            </span>
+            <span
+              class:list={[
+                "inline-block font-semibold text-[0.72rem] tracking-[0.06em] uppercase rounded-[3px] px-[11px] py-1 mb-3.5 border",
+                i === 0 ? "bg-accent border-accent text-white" : "text-accent-text border-phyco-200",
+              ]}
+            >
+              {step.status}
+            </span>
+            <h3 class="text-[1.2rem] mb-2">{step.title}</h3>
+            <p class="text-muted text-[0.98rem]">{step.body}</p>
+          </article>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Mobile: vertical timeline -->
+  <div class="md:hidden relative pl-9">
+    <div class="absolute left-[6px] top-3 bottom-3 w-[2px] bg-line overflow-hidden rounded-full">
+      <div class="rm-line rm-line--v w-full h-full bg-gradient-to-b from-phyco-400 to-accent origin-top" data-rm-line></div>
+    </div>
+    <div class="grid gap-4">
+      {steps.map((step, i) => (
+        <div class="relative">
+          <span class="absolute left-[-35px] top-2 inline-flex">
+            {i === 0 && <span class="rm-pulse absolute inset-0 rounded-full bg-accent/30" data-rm-pulse></span>}
+            <span
+              class:list={[
+                "rm-dot relative block w-[14px] h-[14px] rounded-full border-2",
+                i === 0 ? "bg-accent border-accent" : "bg-card border-phyco-300",
+              ]}
+              style={`box-shadow: ${i === 0 ? "0 0 0 5px rgba(0,142,221,0.14)" : "0 0 0 5px var(--color-page)"}`}
+              data-rm-dot={i}
+            ></span>
+          </span>
+          <article class:list={["card card--hover card--sheen pt-[26px] h-full", i === 0 && "border-phyco-300!"]}>
+            <span class:list={["block text-[2.4rem] font-semibold leading-none tracking-[-0.03em] mb-4 tabular-nums", i === 0 ? "text-accent" : "text-phyco-200"]}>
+              {nums[i]}
+            </span>
+            <span
+              class:list={[
+                "inline-block font-semibold text-[0.72rem] tracking-[0.06em] uppercase rounded-[3px] px-[11px] py-1 mb-3.5 border",
+                i === 0 ? "bg-accent border-accent text-white" : "text-accent-text border-phyco-200",
+              ]}
+            >
+              {step.status}
+            </span>
+            <h3 class="text-[1.2rem] mb-2">{step.title}</h3>
+            <p class="text-muted text-[0.98rem]">{step.body}</p>
+          </article>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Start hidden only when JS will animate them in. */
+  :global(html.js) .rm-line {
+    transform: scaleX(0);
+  }
+  :global(html.js) .rm-line--v {
+    transform: scaleY(0);
+  }
+  :global(html.js) .rm-dot {
+    transform: scale(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(html.js) .rm-line,
+    :global(html.js) .rm-line--v {
+      transform: none;
+    }
+    :global(html.js) .rm-dot {
+      transform: none;
+    }
+    .rm-pulse {
+      display: none;
+    }
+  }
+  .rm-pulse {
+    animation: rmPulse 2.6s ease-in-out infinite;
+    animation-play-state: paused;
+  }
+  :global(html.js) [data-roadmap].is-on .rm-pulse {
+    animation-play-state: running;
+  }
+  @keyframes rmPulse {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+    50% {
+      transform: scale(2.1);
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const root = document.querySelector<HTMLElement>("[data-roadmap]");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (root && !reduce) {
+    const lineDur = 1.4;
+    const ease = "power4.out";
+    const lines = root.querySelectorAll("[data-rm-line]");
+    const dots = Array.from(root.querySelectorAll<HTMLElement>("[data-rm-dot]"));
+    const n = dots.length / 2 || 1; // desktop + mobile copies share indices
+
+    ScrollTrigger.create({
+      trigger: root,
+      start: "top 85%",
+      once: true,
+      onEnter: () => {
+        root.classList.add("is-on");
+        gsap.to(lines, { scaleX: 1, scaleY: 1, duration: lineDur, ease });
+        dots.forEach((dot) => {
+          const i = Number(dot.dataset.rmDot || 0);
+          gsap.to(dot, {
+            scale: 1,
+            duration: 0.5,
+            ease,
+            delay: (i / Math.max(1, n - 1)) * lineDur,
+          });
+        });
+      },
+    });
+  } else if (root) {
+    root.classList.add("is-on");
+  }
+</script>

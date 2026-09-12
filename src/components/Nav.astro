@@ -1,0 +1,274 @@
+---
+import type { Lang } from "@/i18n/config";
+
+interface Props {
+  lang: Lang;
+  navTeam: string;
+  navContact: string;
+  langLabel: string;
+  ptHref: string;
+  enHref: string;
+  /** Home path prefix for the section anchors. Empty on the home page itself. */
+  basePath?: string;
+  /** Where the brand lockup points. Always the home of the active language. */
+  homeHref: string;
+}
+
+const {
+  lang,
+  navTeam,
+  navContact,
+  langLabel,
+  ptHref,
+  enHref,
+  basePath = "",
+  homeHref,
+} = Astro.props;
+
+const links = [
+  { href: `${basePath}#team`, label: navTeam, soft: true },
+  { href: `${basePath}#connect`, label: navContact, soft: false },
+];
+---
+
+<header id="top" class="site-nav" data-nav>
+  <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-4 max-w-[var(--maxw)] mx-auto px-[var(--gutter)] py-3.5">
+    <!-- Language toggle -->
+    <div
+      class="hidden sm:inline-flex items-center gap-1 justify-self-start"
+      role="group"
+      aria-label={langLabel}
+    >
+      <a
+        href={ptHref}
+        aria-current={lang === "pt" ? "true" : undefined}
+        class:list={["nav-lang", lang === "pt" && "nav-lang--active"]}
+      >
+        PT
+      </a>
+      <span class="nav-sep">/</span>
+      <a
+        href={enHref}
+        aria-current={lang === "en" ? "true" : undefined}
+        class:list={["nav-lang", lang === "en" && "nav-lang--active"]}
+      >
+        EN
+      </a>
+    </div>
+
+    <!-- Brand -->
+    <a href={homeHref} aria-label="Algacore" class="col-start-2 justify-self-center inline-flex items-center">
+      <img
+        src="/brand/svg/algacore-lockup-stacked-white.svg"
+        alt="Algacore"
+        class="nav-logo nav-logo--light h-12 md:h-16 w-auto"
+        width="180"
+        height="64"
+      />
+      <img
+        src="/brand/svg/algacore-lockup-stacked.svg"
+        alt=""
+        aria-hidden="true"
+        class="nav-logo nav-logo--dark h-12 md:h-16 w-auto"
+        width="180"
+        height="64"
+      />
+    </a>
+
+    <!-- Desktop links -->
+    <nav class="col-start-3 justify-self-end hidden sm:inline-flex items-center gap-5" aria-label="Primary">
+      {links.map((l) => (
+        <a href={l.href} class:list={["nav-link", l.soft && "hidden md:inline-block"]}>
+          {l.label}
+        </a>
+      ))}
+    </nav>
+
+    <!-- Mobile menu button -->
+    <button
+      type="button"
+      aria-label="Menu"
+      aria-expanded="false"
+      data-nav-toggle
+      class="nav-burger sm:hidden col-start-3 justify-self-end inline-flex flex-col gap-[5px] p-2"
+    >
+      <span class="nav-burger-bar"></span>
+      <span class="nav-burger-bar nav-burger-bar--mid"></span>
+      <span class="nav-burger-bar"></span>
+    </button>
+  </div>
+
+  <!-- Mobile sheet -->
+  <nav class="nav-sheet sm:hidden" aria-label="Mobile" data-nav-sheet>
+    <div class="px-[var(--gutter)] py-5 grid gap-4">
+      {links.map((l) => (
+        <a href={l.href} class="text-ink text-lg font-medium" data-nav-close>
+          {l.label}
+        </a>
+      ))}
+      <div class="flex items-center gap-3 pt-2 border-t border-line text-muted">
+        <a href={ptHref} class={lang === "pt" ? "text-ink font-medium underline underline-offset-4" : ""}>PT</a>
+        <span>/</span>
+        <a href={enHref} class={lang === "en" ? "text-ink font-medium underline underline-offset-4" : ""}>EN</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<style>
+  .site-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    backdrop-filter: saturate(140%) blur(10px);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
+    transition:
+      background-color 0.3s,
+      border-color 0.3s;
+  }
+  .site-nav.is-solid {
+    background: rgba(255, 255, 255, 0.88);
+    border-color: var(--color-line);
+  }
+
+  .nav-lang,
+  .nav-link {
+    padding: 0.375rem 0.25rem;
+    font-weight: 500;
+    color: #fff;
+    transition: opacity 0.2s;
+  }
+  .nav-lang {
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+  }
+  .nav-link {
+    font-size: 0.95rem;
+  }
+  .nav-lang:hover,
+  .nav-link:hover {
+    opacity: 0.72;
+  }
+  .nav-lang:not(.nav-lang--active) {
+    color: rgba(255, 255, 255, 0.82);
+  }
+  .nav-lang--active {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .nav-sep {
+    color: rgba(255, 255, 255, 0.24);
+  }
+  .site-nav.is-solid .nav-lang,
+  .site-nav.is-solid .nav-link {
+    color: var(--color-ink);
+  }
+  .site-nav.is-solid .nav-lang:not(.nav-lang--active) {
+    color: var(--color-muted);
+  }
+  .site-nav.is-solid .nav-sep {
+    color: var(--color-line);
+  }
+
+  .nav-logo--dark {
+    display: none;
+  }
+  .site-nav.is-solid .nav-logo--light {
+    display: none;
+  }
+  .site-nav.is-solid .nav-logo--dark {
+    display: block;
+  }
+
+  .nav-burger {
+    color: #fff;
+  }
+  .site-nav.is-solid .nav-burger {
+    color: var(--color-ink);
+  }
+  .nav-burger-bar {
+    display: block;
+    width: 1.5rem;
+    height: 2px;
+    border-radius: 999px;
+    background: currentColor;
+    transition:
+      transform 0.3s var(--ease-brand),
+      opacity 0.3s;
+  }
+  .site-nav.is-open .nav-burger-bar:first-child {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .site-nav.is-open .nav-burger-bar--mid {
+    opacity: 0;
+  }
+  .site-nav.is-open .nav-burger-bar:last-child {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .nav-sheet {
+    overflow: hidden;
+    background: #fff;
+    border-top: 1px solid var(--color-line);
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition:
+      grid-template-rows 0.3s var(--ease-brand),
+      opacity 0.3s var(--ease-brand);
+  }
+  .nav-sheet > div {
+    min-height: 0;
+    overflow: hidden;
+  }
+  .site-nav.is-open .nav-sheet {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>("[data-nav]");
+  const toggle = document.querySelector<HTMLButtonElement>("[data-nav-toggle]");
+
+  if (header) {
+    let heroVisible = false;
+    let open = false;
+
+    const sync = () => {
+      header.classList.toggle("is-solid", !heroVisible || open);
+      header.classList.toggle("is-open", open);
+      toggle?.setAttribute("aria-expanded", String(open));
+      document.body.style.overflow = open ? "hidden" : "";
+    };
+
+    const hero = document.getElementById("hero");
+    if (hero) {
+      // Swap to the solid bar a little before the hero fully leaves.
+      new IntersectionObserver(
+        ([entry]) => {
+          heroVisible = entry.isIntersecting;
+          sync();
+        },
+        { rootMargin: "-80px 0px 0px 0px", threshold: 0 },
+      ).observe(hero);
+    } else {
+      sync();
+    }
+
+    toggle?.addEventListener("click", () => {
+      open = !open;
+      sync();
+    });
+    header.querySelectorAll("[data-nav-close]").forEach((a) =>
+      a.addEventListener("click", () => {
+        open = false;
+        sync();
+      }),
+    );
+  }
+</script>

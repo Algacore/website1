@@ -1,6 +1,5 @@
 ---
-import HeroCanvas from "@/components/react/HeroCanvas.tsx";
-import MagneticButton from "@/components/react/MagneticButton.tsx";
+import MagneticButton from "@/components/sections/parts/MagneticButton.astro";
 import type { SiteContent } from "@/lib/content";
 interface Props {
   hero: SiteContent["hero"];
@@ -11,8 +10,12 @@ const { hero } = Astro.props;
 <section
   id="hero"
   class="deep-ground grain relative flex flex-col justify-center overflow-hidden min-h-svh pt-[112px] pb-[120px] text-white"
+  data-theme="dark"
 >
-  <HeroCanvas client:load />
+  <canvas
+    class="absolute inset-0 z-0 h-full w-full"
+    aria-hidden="true"
+    data-hero-canvas></canvas>
 
   <!-- Giant translucent mark bleeding off the right edge (parallax depth). -->
   <svg
@@ -50,10 +53,10 @@ const { hero } = Astro.props;
         </p>
 
         <div class="hero-rise flex flex-wrap gap-3.5 mt-[clamp(26px,3.5vw,36px)]" style="--d:260">
-          <MagneticButton client:visible href="#connect" variant="solid" dataInterest="investor">
+          <MagneticButton href="#connect" variant="solid" dataInterest="investor">
             {hero.ctaInvest}
           </MagneticButton>
-          <MagneticButton client:visible href="#connect" variant="ghost" dataInterest="partner">
+          <MagneticButton href="#connect" variant="ghost" dataInterest="partner">
             {hero.ctaPartner}
           </MagneticButton>
         </div>
@@ -79,3 +82,10 @@ const { hero } = Astro.props;
     </span>
   </a>
 </section>
+
+<script>
+  import { mountHeroCanvas } from "@/scripts/hero-canvas";
+
+  const canvas = document.querySelector<HTMLCanvasElement>("[data-hero-canvas]");
+  if (canvas) mountHeroCanvas(canvas);
+</script>

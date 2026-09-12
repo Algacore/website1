@@ -1,0 +1,64 @@
+---
+interface Props {
+  href: string;
+  variant?: "solid" | "ghost" | "ink";
+  dataInterest?: string;
+}
+
+const { href, variant = "solid", dataInterest } = Astro.props;
+
+const variants: Record<string, string> = {
+  solid:
+    "bg-white text-phyco-700 shadow-[0_8px_24px_rgba(15,46,61,0.18)] hover:bg-white hover:shadow-[0_14px_34px_rgba(15,46,61,0.28)]",
+  ghost:
+    "bg-white/10 text-white border border-white/60 hover:bg-white/20 hover:border-white shadow-[0_0_0_1px_rgba(255,255,255,0.1)]",
+  ink: "bg-ink text-white hover:bg-cyano-800",
+};
+---
+
+<a
+  href={href}
+  data-interest={dataInterest}
+  data-magnetic
+  class={`group inline-flex items-center gap-2 rounded-[3px] px-[26px] py-[14px] text-base font-medium tracking-[-0.01em] transition-[background-color,border-color,box-shadow] duration-200 ${variants[variant]}`}
+>
+  <span><slot /></span>
+  <svg
+    class="h-[15px] w-[15px] shrink-0 transition-transform duration-200 ease-out group-hover:translate-x-1"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M5 12h14M13 6l6 6-6 6"></path>
+  </svg>
+</a>
+
+<script>
+  import { gsap } from "gsap";
+
+  // Drift gently toward the cursor; springy return on leave. Skipped entirely
+  // under reduced motion.
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll<HTMLAnchorElement>("[data-magnetic]").forEach((el) => {
+      const toX = gsap.quickTo(el, "x", { duration: 0.35, ease: "power3.out" });
+      const toY = gsap.quickTo(el, "y", { duration: 0.35, ease: "power3.out" });
+
+      el.addEventListener("mousemove", (e) => {
+        const r = el.getBoundingClientRect();
+        toX(((e.clientX - (r.left + r.width / 2)) / r.width) * 14);
+        toY(((e.clientY - (r.top + r.height / 2)) / r.height) * 14);
+      });
+      el.addEventListener("mouseleave", () => {
+        toX(0);
+        toY(0);
+      });
+      el.addEventListener("pointerdown", () => gsap.to(el, { scale: 0.97, duration: 0.1 }));
+      el.addEventListener("pointerup", () => gsap.to(el, { scale: 1, duration: 0.2 }));
+      el.addEventListener("pointerleave", () => gsap.to(el, { scale: 1, duration: 0.2 }));
+    });
+  }
+</script>

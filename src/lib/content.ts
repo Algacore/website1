@@ -134,6 +134,17 @@ export interface SiteContent {
     confirm: string;
     error: string;
   };
+  faq: {
+    eyebrow: string;
+    title: string;
+    lede: string;
+    items: { q: string; a: string }[];
+  };
+  notFound: {
+    title: string;
+    body: string;
+    cta: string;
+  };
   footer: { copy: string; mail: string; legal: string; privacy: string };
   legalPage: LegalDoc;
   privacyPage: LegalDoc;
@@ -344,6 +355,46 @@ const pt: SiteContent = {
     sending: "Enviando...",
     confirm: "Obrigado. Sua mensagem foi recebida e entraremos em contato.",
     error: "Não foi possível enviar agora. Tente novamente ou escreva para contato@algacore.com.br.",
+  },
+  faq: {
+    eyebrow: "Perguntas frequentes",
+    title: "O que costumam nos perguntar",
+    lede: "Respostas diretas sobre o pigmento, a tecnologia e o estágio real do projeto.",
+    items: [
+      {
+        q: "O que é ficocianina?",
+        a: "É uma proteína-pigmento azul produzida pela spirulina. Na literatura, seu pico de absorção fica próximo de 620 nm, na faixa do vermelho-alaranjado, e é isso que dá a cor azul intensa. É usada como corante natural e estudada como insumo para diagnósticos e pesquisa.",
+      },
+      {
+        q: "Por que spirulina?",
+        a: "Porque é o organismo mais estudado e mais cultivado para a produção de ficocianina. Segundo a literatura, a ficocianina pode representar uma fração relevante da proteína total da célula em condições adequadas de cultivo, o que a torna a matéria-prima natural para o pigmento.",
+      },
+      {
+        q: "Por que fotobiorreatores fechados, e não tanques abertos?",
+        a: "A maior parte da spirulina do mundo cresce em tanques abertos, expostos ao ambiente. Nosso projeto segue o caminho fechado: o objetivo do desenho é manter a cultura isolada do exterior, com luz, temperatura e nutrientes sob controle, buscando pureza e rastreabilidade que o tanque aberto dificilmente entrega.",
+      },
+      {
+        q: "Em que estágio o projeto está?",
+        a: "No começo. A Algacore é um projeto em constituição: ainda não há empresa registrada, planta construída nem produto. Os fundadores estão levantando a primeira rodada para dar os primeiros passos formais.",
+      },
+      {
+        q: "Vocês já vendem ficocianina?",
+        a: "Não. Não existe produto disponível hoje e nenhum fornecimento pode ser contratado nesta fase. O formulário de contato serve para conversar, não para comprar ou reservar.",
+      },
+      {
+        q: "Qual é o caminho regulatório pretendido?",
+        a: "A intenção é seguir as rotas regulatórias aplicáveis no Brasil conforme o uso do pigmento, começando pelos usos de menor complexidade e evoluindo com o projeto. Nenhuma autorização, registro ou certificação foi obtida até aqui, porque ainda não há operação.",
+      },
+      {
+        q: "Como falar com os fundadores?",
+        a: "Pelo formulário no fim desta página ou por contato@algacore.com.br. Vale repetir: nada neste site é oferta de investimento ou de produto.",
+      },
+    ],
+  },
+  notFound: {
+    title: "Página não encontrada",
+    body: "O endereço que você tentou abrir não existe neste site. Pode ter sido digitado errado ou o link estar desatualizado.",
+    cta: "Ir para a página inicial",
   },
   footer: {
     copy: "Algacore 2026",
@@ -678,6 +729,46 @@ const en: SiteContent = {
     sending: "Sending...",
     confirm: "Thank you. Your message has been received and we will be in touch.",
     error: "We couldn't send that just now. Please try again or write to contato@algacore.com.br.",
+  },
+  faq: {
+    eyebrow: "Frequently asked questions",
+    title: "What people usually ask us",
+    lede: "Straight answers about the pigment, the technology and where the project actually stands.",
+    items: [
+      {
+        q: "What is phycocyanin?",
+        a: "A blue pigment-protein produced by spirulina. In the literature its absorption peak sits near 620 nm, in the orange-red range, which is what gives it the deep blue color. It is used as a natural colorant and studied as an input for diagnostics and research.",
+      },
+      {
+        q: "Why spirulina?",
+        a: "Because it is the most studied and most cultivated organism for phycocyanin production. According to the literature, phycocyanin can make up a relevant share of the cell's total protein under the right cultivation conditions, which makes it the natural feedstock for the pigment.",
+      },
+      {
+        q: "Why closed photobioreactors instead of open ponds?",
+        a: "Most of the world's spirulina grows in open ponds, exposed to the environment. Our project takes the closed path: the design goal is to keep the culture isolated from the outside, with light, temperature and nutrients under control, aiming for purity and traceability an open pond can rarely deliver.",
+      },
+      {
+        q: "What stage is the project at?",
+        a: "The very beginning. Algacore is a venture in formation: there is no registered company yet, no plant built and no product. The founders are raising a first round to take the first formal steps.",
+      },
+      {
+        q: "Do you already sell phycocyanin?",
+        a: "No. There is no product available today and no supply can be contracted at this stage. The contact form is for talking, not for buying or reserving anything.",
+      },
+      {
+        q: "What is the intended regulatory path?",
+        a: "The intention is to follow the regulatory routes that apply in Brazil for each use of the pigment, starting with the least complex uses and moving up as the project matures. No authorization, registration or certification has been obtained so far, because there is no operation yet.",
+      },
+      {
+        q: "How do we talk to the founders?",
+        a: "Through the form at the end of this page or via contato@algacore.com.br. Worth repeating: nothing on this site is an offer of investment or of any product.",
+      },
+    ],
+  },
+  notFound: {
+    title: "Page not found",
+    body: "The address you tried to open does not exist on this site. It may have been mistyped or the link may be out of date.",
+    cta: "Go to the home page",
   },
   footer: {
     copy: "Algacore 2026",

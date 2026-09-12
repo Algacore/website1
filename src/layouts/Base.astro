@@ -4,8 +4,7 @@ import { getContent } from "@/lib/content";
 import { localeAttr, homePath, legalPath, privacyPath, type Lang } from "@/i18n/config";
 import MarkDefs from "@/components/MarkDefs.astro";
 import Footer from "@/components/Footer.astro";
-import Nav from "@/components/react/Nav.tsx";
-import SiteEffects from "@/components/react/SiteEffects.tsx";
+import Nav from "@/components/Nav.astro";
 
 interface Props {
   lang: Lang;
@@ -16,8 +15,17 @@ interface Props {
   altPath?: (l: Lang) => string;
   /** Anchor the skip link jumps to on this page. */
   skipTarget?: string;
+  /** Absolute URL of the social card image. */
+  ogImage?: string;
 }
-const { lang, title, description, altPath = homePath, skipTarget = "#vision" } = Astro.props;
+const {
+  lang,
+  title,
+  description,
+  altPath = homePath,
+  skipTarget = "#vision",
+  ogImage = "https://algacore.com.br/brand/og/og-card.png",
+} = Astro.props;
 const c = getContent(lang);
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).toString();
 const altLang = lang === "pt" ? "en" : "pt";
@@ -46,13 +54,8 @@ const navBase = onHome ? "" : homePath(lang);
     <link rel="alternate" hreflang="en" href={absAlt("en")} />
     <link rel="alternate" hreflang="x-default" href={absAlt("pt")} />
 
-    <!-- Type system: Outfit (body/UI/wordmark) + Fraunces (serif display). -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Outfit:wght@300;400;500;600;700&display=swap"
-    />
+    <!-- Type system: Outfit (body/UI/wordmark) + Fraunces (serif display),
+         self-hosted via @fontsource imports in global.css. -->
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
@@ -69,14 +72,14 @@ const navBase = onHome ? "" : homePath(lang);
     <meta property="og:description" content={pageDesc} />
     <meta property="og:locale" content={localeAttr[lang].replace("-", "_")} />
     <meta property="og:locale:alternate" content={localeAttr[altLang].replace("-", "_")} />
-    <meta property="og:image" content="https://algacore.com.br/brand/og/og-card.png" />
+    <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Algacore" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={pageDesc} />
-    <meta name="twitter:image" content="https://algacore.com.br/brand/og/og-card.png" />
+    <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:image:alt" content="Algacore" />
 
     <!-- Structured data. Algacore is a project in formation, so this claims no
@@ -117,7 +120,6 @@ const navBase = onHome ? "" : homePath(lang);
     <MarkDefs />
 
     <Nav
-      client:load
       lang={lang}
       navTeam={c.nav.team}
       navContact={c.nav.contact}
@@ -141,6 +143,6 @@ const navBase = onHome ? "" : homePath(lang);
       privacyHref={privacyPath(lang)}
     />
 
-    <SiteEffects client:load />
+    <script>import "@/scripts/site-effects";</script>
   </body>
 </html>

@@ -1,32 +1,34 @@
-# Algacore — version1
+# Algacore site (version1)
 
-The full-depth, interactive build of the Algacore marketing site. Same copy,
-brand, and science as the static draft in the repo root, rebuilt on a modern
-stack with motion, smooth scroll, routed i18n, and a real form backend.
+The production build of the Algacore marketing site. Static Astro output, one
+bilingual content model, GSAP-driven motion, zero UI framework.
 
 ## Stack
 
-- **Astro 5** (`output: "server"`, `@astrojs/node` standalone adapter). Content
-  pages are prerendered (`export const prerender = true`); only `/api/contact`
-  runs on the server.
-- **React 19 islands** — hydrated only where interactivity earns it.
+- **Astro 5**, `output: "static"`. Every route is prerendered to HTML; there is
+  no server runtime and no API route.
 - **Tailwind v4** (`@tailwindcss/vite`). Brand tokens live in `@theme` in
   `src/styles/global.css`, so utilities (`bg-cyano-900`, `text-phyco-500` ...)
   come straight from Brand System v1.0.
-- **Framer Motion** — magnetic CTAs, the self-drawing absorption curve, the
-  photobioreactor culture fill + flow, count-up stats, nav + mobile menu.
-- **GSAP + ScrollTrigger** — scroll-bound parallax (`[data-parallax]`).
-- **Lenis** — momentum smooth-scroll, synced into GSAP's ticker; anchor links
+- **GSAP + ScrollTrigger** — the pinned Vision extraction sequence, parallax,
+  magnetic CTAs, scroll-triggered draw-ins, section theme choreography.
+- **Lenis** — momentum smooth-scroll, synced into ScrollTrigger; anchor links
   glide through it.
+- **Canvas 2D** — the hero scene (depth-sorted filament planes, caustic light
+  bands, extraction glow), hand-rolled, no library.
+- **Self-hosted type** via `@fontsource-variable/outfit` and
+  `@fontsource-variable/fraunces`. No third-party font request at runtime.
 
-All motion is gated on `prefers-reduced-motion`.
+Interactive parts are plain `<script>` modules inside their Astro components.
+All motion is gated on `prefers-reduced-motion`, and everything degrades to
+readable static content with JavaScript off.
 
 ## Commands
 
 ```bash
 npm install
 npm run dev        # http://localhost:4321
-npm run build      # → dist/ (server + prerendered client)
+npm run build      # → dist/ (static)
 npm run preview    # serve the built output
 ```
 
@@ -40,31 +42,50 @@ dashes anywhere in page copy.
 
 ## Contact form
 
-`ContactForm.tsx` posts JSON to `src/pages/api/contact.ts`, which validates and
-either forwards to `CONTACT_WEBHOOK_URL` (Formspree, Make, n8n, a Resend proxy,
-...) or logs the submission so the form works out of the box. Set the env var in
-the deploy environment to wire a real inbox:
+`ContactForm.astro` posts the submission as JSON straight to Formspree. Point it
+at your form by setting the endpoint in `.env` (see `.env.example`):
 
 ```bash
-CONTACT_WEBHOOK_URL="https://formspree.io/f/XXXX"
+PUBLIC_FORMSPREE_ENDPOINT="https://formspree.io/f/XXXX"
 ```
+
+The variable is `PUBLIC_`-prefixed because it ships in the client bundle, which
+is fine: a Formspree form id is not a secret. A hidden honeypot field
+(`company_website`) silently drops bot submissions. The required acknowledgement
+checkbox and the privacy note are legal requirements, not decoration; do not
+remove them.
 
 ## Structure
 
 ```
 src/
+├── assets/team/          # team photos, processed by astro:assets
 ├── components/
-│   ├── react/            # islands: Nav, SiteEffects, HeroCanvas, MagneticButton,
-│   │                     #          Compare, Spectrum, Counter, ContactForm
-│   ├── sections/         # Hero, Band, Vision, Approach, Science, Path, Team, Connect
+│   ├── sections/         # Hero, Band, Vision, Market, Approach, Science,
+│   │   │                 # Path, Team, Faq, Connect
+│   │   └── parts/        # MagneticButton, Counter, Roadmap, Compare,
+│   │                     # ProcessFlow, Spectrum, ContactForm
+│   ├── Nav.astro         # fixed header, scroll state, mobile sheet
 │   ├── MarkDefs.astro    # the brand mark <symbol>
 │   ├── SectionHead.astro
-│   ├── Wordmark.astro · Footer.astro · SiteSections.astro
+│   ├── Wordmark.astro · Footer.astro · LegalDoc.astro · SiteSections.astro
 ├── i18n/config.ts        # locales, lang resolution, path helpers
 ├── lib/content.ts        # full bilingual content model
-├── layouts/Base.astro    # head, nav, footer, global effects
-├── pages/                # index.astro (PT), en/index.astro (EN), api/contact.ts
+├── layouts/Base.astro    # head, meta, JSON-LD, nav, footer, global effects
+├── pages/                # index.astro (PT), en/index.astro (EN), legal pages, 404
+├── scripts/
+│   ├── site-effects.ts   # Lenis, reveals, parallax, progress bar, theme fades
+│   ├── hero-canvas.ts    # the hero Canvas 2D scene
+│   └── vision-sequence.ts# the pinned extraction sequence
 └── styles/global.css     # Tailwind + @theme brand tokens + base + keyframes
 ```
 
-Brand assets are copied into `public/brand` and `public/team`.
+Brand assets (logos, favicons, OG card) live in `public/brand`.
+
+## Legal guardrails
+
+Algacore is a venture in formation. The site must never read as an operating,
+registered company or as an investment solicitation. The rules that govern the
+copy (no registration symbols, no legal name or CNPJ, capacity in target voice,
+sourced numbers, non-offer disclaimer, the legal and privacy pages) are written
+out in `CLAUDE.md` at the repo root. Read it before touching page copy.

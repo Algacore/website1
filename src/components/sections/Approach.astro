@@ -1,6 +1,6 @@
 ---
 import SectionHead from "@/components/SectionHead.astro";
-import Compare from "@/components/react/Compare.tsx";
+import Compare from "@/components/sections/parts/Compare.astro";
 import type { SiteContent } from "@/lib/content";
 interface Props {
   approach: SiteContent["approach"];
@@ -8,7 +8,7 @@ interface Props {
 const { approach } = Astro.props;
 ---
 
-<section id="approach" class="section-pad section-alt relative atmos">
+<section id="approach" class="section-pad section-alt relative atmos" data-theme="light">
   <div class="container">
     <SectionHead chapter="02" eyebrow={approach.eyebrow} title={approach.title} />
 
@@ -37,7 +37,6 @@ const { approach } = Astro.props;
       </div>
 
       <Compare
-        client:visible
         pondAlt={approach.pondAlt}
         pondTag={approach.pondTag}
         pondLabel={approach.pondLabel}

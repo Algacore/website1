@@ -1,6 +1,6 @@
 ---
 import SectionHead from "@/components/SectionHead.astro";
-import ContactForm from "@/components/react/ContactForm.tsx";
+import ContactForm from "@/components/sections/parts/ContactForm.astro";
 import type { SiteContent } from "@/lib/content";
 import { privacyPath, type Lang } from "@/i18n/config";
 interface Props {
@@ -11,9 +11,9 @@ interface Props {
 const { connect, form, lang } = Astro.props;
 ---
 
-<section id="connect" class="section-pad section-alt relative atmos">
+<section id="connect" class="section-pad section-alt relative atmos" data-theme="light">
   <div class="container">
-    <SectionHead chapter="06" eyebrow={connect.eyebrow} title={connect.title} />
+    <SectionHead chapter="07" eyebrow={connect.eyebrow} title={connect.title} />
     <p class="text-muted mb-10 max-w-[54ch] text-[1.075rem] reveal">{connect.lede}</p>
 
     <div class="grid gap-5 md:grid-cols-2 md:gap-6">
@@ -34,7 +34,7 @@ const { connect, form, lang } = Astro.props;
     </div>
 
     <div class="block-gap-md reveal">
-      <ContactForm client:visible copy={form} lang={lang} privacyHref={privacyPath(lang)} />
+      <ContactForm copy={form} lang={lang} privacyHref={privacyPath(lang)} />
     </div>
 
     <p class="reveal text-muted mt-6 max-w-[var(--maxw-narrow)] text-[0.82rem] leading-relaxed">

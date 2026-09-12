@@ -1,0 +1,69 @@
+---
+interface Props {
+  to: number;
+  prefix?: string;
+  suffix?: string;
+  durationMs?: number;
+}
+
+const { to, prefix = "", suffix = "", durationMs = 1400 } = Astro.props;
+---
+
+<span
+  class="block font-semibold tracking-[-0.03em] text-ink leading-none tabular-nums text-[clamp(2.4rem,7vw,3.4rem)]"
+  data-counter
+  data-to={to}
+  data-duration={durationMs}
+>{prefix}<span data-counter-value>{to}</span>{suffix}</span>
+
+<script>
+  // Count-up that fires once when scrolled into view; static under reduced motion.
+  const els = document.querySelectorAll<HTMLElement>("[data-counter]");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const easeOut = (t: number) => 1 - Math.pow(1 - t, 3.2);
+
+  // The markup ships the final value so a no-JS reader sees the real number;
+  // the count-up only takes over once we know we can animate it.
+  if (!reduce) {
+    els.forEach((el) => {
+      const out = el.querySelector<HTMLElement>("[data-counter-value]");
+      if (out) out.textContent = "0";
+    });
+  }
+
+  const run = (el: HTMLElement) => {
+    const out = el.querySelector<HTMLElement>("[data-counter-value]");
+    const to = Number(el.dataset.to || 0);
+    const duration = Number(el.dataset.duration || 1400);
+    if (!out) return;
+    if (reduce || duration <= 0) {
+      out.textContent = String(to);
+      return;
+    }
+    const t0 = performance.now();
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - t0) / duration);
+      out.textContent = String(Math.round(easeOut(p) * to));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+
+  if (reduce || !("IntersectionObserver" in window)) {
+    els.forEach(run);
+  } else {
+    const io = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            run(entry.target as HTMLElement);
+            obs.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -15% 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+  }
+</script>

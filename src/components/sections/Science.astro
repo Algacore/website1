@@ -1,7 +1,7 @@
 ---
 import SectionHead from "@/components/SectionHead.astro";
-import Counter from "@/components/react/Counter.tsx";
-import Spectrum from "@/components/react/Spectrum.tsx";
+import Counter from "@/components/sections/parts/Counter.astro";
+import Spectrum from "@/components/sections/parts/Spectrum.astro";
 import Wordmark from "@/components/Wordmark.astro";
 import type { SiteContent } from "@/lib/content";
 interface Props {
@@ -21,7 +21,7 @@ const stat3 = parse(science.stat3num, 40);
 const sig = science.sig;
 ---
 
-<section id="science" class="section-pad relative filament-bg">
+<section id="science" class="section-pad relative filament-bg" data-theme="light">
   <div class="container relative z-[1]">
     <SectionHead chapter="03" eyebrow={science.eyebrow} title={science.title} />
 
@@ -29,21 +29,21 @@ const sig = science.sig;
       <!-- Stat 1 -->
       <article class="card card--hover card--sheen reveal md:col-span-2 pt-[26px]" style="--i:0">
         <span class="absolute top-0 left-0 w-14 h-1 bg-accent rounded-br-[3px]" aria-hidden="true"></span>
-        <Counter client:visible to={70} prefix="60-" suffix="%" />
+        <Counter to={70} prefix="60-" suffix="%" />
         <span class="block mt-3.5 text-muted max-w-[30ch]" set:html={science.stat1} />
       </article>
 
       <!-- Stat 2 -->
       <article class="card card--hover card--sheen reveal md:col-span-2 pt-[26px]" style="--i:1">
         <span class="absolute top-0 left-0 w-14 h-1 bg-accent rounded-br-[3px]" aria-hidden="true"></span>
-        <Counter client:visible to={stat2.to} prefix={stat2.prefix} suffix={stat2.suffix} />
+        <Counter to={stat2.to} prefix={stat2.prefix} suffix={stat2.suffix} />
         <span class="block mt-3.5 text-muted max-w-[30ch]">{science.stat2}</span>
       </article>
 
       <!-- Stat 3: a declared design target, not a measured figure. -->
       <article class="card card--hover card--sheen reveal md:col-span-2 pt-[26px]" style="--i:2">
         <span class="absolute top-0 left-0 w-14 h-1 bg-accent rounded-br-[3px]" aria-hidden="true"></span>
-        <Counter client:visible to={stat3.to} prefix={stat3.prefix} suffix={stat3.suffix} />
+        <Counter to={stat3.to} prefix={stat3.prefix} suffix={stat3.suffix} />
         <span class="block mt-3.5 text-muted max-w-[30ch]">{science.stat3}</span>
       </article>
 
@@ -74,7 +74,7 @@ const sig = science.sig;
       style="background: linear-gradient(150deg, var(--color-cyano-900) 0%, var(--color-phyco-800) 68%, var(--color-phyco-700) 100%);"
       aria-labelledby="sig-title"
     >
-      <Spectrum client:visible alt={sig.alt} caption={sig.caption} peakLabel={sig.peakLabel} />
+      <Spectrum alt={sig.alt} caption={sig.caption} peakLabel={sig.peakLabel} />
 
       <div class="relative z-[1] min-w-0">
         <p class="text-[0.75rem] font-semibold tracking-[0.1em] uppercase text-phyco-300 mb-3">{sig.eyebrow}</p>

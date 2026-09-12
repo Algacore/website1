@@ -1,0 +1,192 @@
+---
+interface FormCopy {
+  interest: string;
+  optInvestor: string;
+  optPartner: string;
+  optOther: string;
+  name: string;
+  company: string;
+  email: string;
+  message: string;
+  ack: string;
+  privacyNote: string;
+  privacyLink: string;
+  send: string;
+  sending: string;
+  confirm: string;
+  error: string;
+}
+
+interface Props {
+  copy: FormCopy;
+  lang: "pt" | "en";
+  privacyHref: string;
+}
+
+const { copy, lang, privacyHref } = Astro.props;
+
+const baseField =
+  "font-[inherit] text-base text-ink bg-card border border-line rounded-[var(--radius-sm-card)] px-3.5 py-3 transition-[border-color,box-shadow] duration-150 focus:outline-none focus:border-accent focus:shadow-[0_0_0_3px_var(--color-phyco-100)]";
+
+const fields = [
+  { id: "name", label: copy.name, type: "text", autocomplete: "name" },
+  { id: "company", label: copy.company, type: "text", autocomplete: "organization" },
+  { id: "email", label: copy.email, type: "email", autocomplete: "email" },
+];
+---
+
+<div id="interest-form" class="max-w-[var(--maxw-narrow)] scroll-mt-28" data-contact data-lang={lang}>
+  <p class="card text-[1.1rem] text-ink hidden" role="status" data-cf-confirm>
+    {copy.confirm}
+  </p>
+
+  <form novalidate class="card card--sheen grid gap-5 p-[clamp(24px,4vw,36px)]" data-cf-form>
+    <div class="grid gap-2">
+      <label for="interest" class="font-medium text-[0.92rem] text-ink">
+        {copy.interest}
+      </label>
+      <select id="interest" name="interest" class={`${baseField} select-chevron`}>
+        <option value="investor">{copy.optInvestor}</option>
+        <option value="partner">{copy.optPartner}</option>
+        <option value="other">{copy.optOther}</option>
+      </select>
+    </div>
+
+    {fields.map((f) => (
+      <div class="grid gap-2">
+        <label for={f.id} class="font-medium text-[0.92rem] text-ink">
+          {f.label} <span class="text-accent-text font-semibold">*</span>
+        </label>
+        <input id={f.id} name={f.id} type={f.type} autocomplete={f.autocomplete} required class={baseField} />
+      </div>
+    ))}
+
+    <div class="grid gap-2">
+      <label for="message" class="font-medium text-[0.92rem] text-ink">
+        {copy.message} <span class="text-accent-text font-semibold">*</span>
+      </label>
+      <textarea id="message" name="message" rows="5" required class={`${baseField} resize-y min-h-[120px]`}></textarea>
+    </div>
+
+    <!-- Honeypot: hidden from people, tempting to bots. A filled value aborts
+         the submit silently. -->
+    <div class="cf-hp" aria-hidden="true">
+      <label for="company_website">Website</label>
+      <input id="company_website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <!-- Required acknowledgement. Algacore is in formation: the visitor
+         confirms this contact is neither an investment nor a product
+         offer, and the flag rides along in the submission payload. -->
+    <label for="ack" class="flex items-start gap-3 text-[0.92rem] text-muted cursor-pointer">
+      <input
+        id="ack"
+        name="ack"
+        type="checkbox"
+        required
+        value="yes"
+        class="mt-[3px] h-4 w-4 shrink-0 accent-[var(--color-phyco-500)]"
+      />
+      <span>{copy.ack}</span>
+    </label>
+
+    <p class="text-[0.88rem] text-muted">
+      {copy.privacyNote}{" "}
+      <a href={privacyHref} class="text-accent-text underline underline-offset-[3px]">
+        {copy.privacyLink}
+      </a>
+      .
+    </p>
+
+    <p class="text-[0.95rem] text-[#b3261e] hidden" role="alert" data-cf-error>
+      {copy.error}
+    </p>
+
+    <button
+      type="submit"
+      class="justify-self-start rounded-[3px] px-[26px] py-[14px] text-base font-medium bg-ink text-white transition-colors hover:bg-cyano-800 disabled:opacity-70"
+      data-cf-submit
+      data-label-send={copy.send}
+      data-label-sending={copy.sending}
+    >
+      {copy.send}
+    </button>
+  </form>
+</div>
+
+<style>
+  /* Visually hidden honeypot; display:none would tip off smarter bots. */
+  .cf-hp {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+</style>
+
+<script>
+  const ENDPOINT =
+    import.meta.env.PUBLIC_FORMSPREE_ENDPOINT || "https://formspree.io/f/mykaoooz";
+
+  const root = document.querySelector<HTMLElement>("[data-contact]");
+  const form = root?.querySelector<HTMLFormElement>("[data-cf-form]");
+  const confirmEl = root?.querySelector<HTMLElement>("[data-cf-confirm]");
+  const errorEl = root?.querySelector<HTMLElement>("[data-cf-error]");
+  const submitBtn = root?.querySelector<HTMLButtonElement>("[data-cf-submit]");
+  const select = root?.querySelector<HTMLSelectElement>("#interest");
+
+  // Preselect the interest when any [data-interest] trigger (hero CTAs, connect
+  // path links) is clicked, mirroring the dual-path flow.
+  document.addEventListener("click", (e) => {
+    const el = (e.target as HTMLElement)?.closest?.("[data-interest]") as HTMLElement | null;
+    if (el && select) {
+      select.value = el.getAttribute("data-interest") || "investor";
+    }
+  });
+
+  let sending = false;
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (sending || !form || !submitBtn) return;
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    const data = Object.fromEntries(new FormData(form).entries()) as Record<string, unknown>;
+
+    // Honeypot filled means a bot. Pretend success, send nothing.
+    if (data.company_website) {
+      form.classList.add("hidden");
+      confirmEl?.classList.remove("hidden");
+      return;
+    }
+    delete data.company_website;
+
+    sending = true;
+    submitBtn.disabled = true;
+    submitBtn.textContent = submitBtn.dataset.labelSending || "";
+    errorEl?.classList.add("hidden");
+
+    try {
+      const res = await fetch(ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ ...data, lang: root?.dataset.lang || "pt" }),
+      });
+      if (!res.ok) throw new Error("bad status");
+      form.classList.add("hidden");
+      confirmEl?.classList.remove("hidden");
+    } catch {
+      errorEl?.classList.remove("hidden");
+    } finally {
+      sending = false;
+      submitBtn.disabled = false;
+      submitBtn.textContent = submitBtn.dataset.labelSend || "";
+    }
+  });
+</script>

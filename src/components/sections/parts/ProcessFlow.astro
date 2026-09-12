@@ -1,0 +1,237 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  stages: string[];
+  notes: string[];
+}
+
+const { eyebrow, title, stages, notes } = Astro.props;
+---
+
+<div
+  class="deep-ground grain relative overflow-hidden rounded-[var(--radius-card)] shadow-[var(--shadow-deep)] p-[clamp(32px,4.5vw,56px)]"
+  data-processflow
+>
+  <div class="relative z-[1]">
+    <p class="eyebrow eyebrow--onDark mb-3">{eyebrow}</p>
+    <h3 class="font-display text-white text-[clamp(1.5rem,3vw,2.1rem)] tracking-[-0.02em] mb-[clamp(36px,5vw,56px)] max-w-[24ch]">
+      {title}
+    </h3>
+
+    <div class="flex flex-col md:flex-row md:items-stretch gap-5 md:gap-3">
+      {stages.map((label, i) => (
+        <>
+          <div class="pf-stage group relative flex-1 min-w-0" data-pf-stage={i}>
+            <div class="flex md:flex-col items-center md:items-start gap-4 md:gap-0 rounded-[3px] border border-white/12 bg-white/[0.04] p-5 md:p-6 transition-colors duration-300 hover:border-phyco-300/60 hover:bg-white/[0.07] h-full">
+              <div class="w-[clamp(56px,12vw,76px)] h-[clamp(56px,12vw,76px)] flex-none md:mb-5 transition-transform duration-500 group-hover:scale-[1.06]">
+                {i === 0 && (
+                  <svg viewBox="0 0 100 100" class="w-full h-full" aria-hidden="true">
+                    <rect x="38" y="8" width="24" height="11" rx="5.5" fill="rgba(115,197,255,0.14)" stroke="#a5ddff" stroke-width="2"></rect>
+                    <rect x="22" y="16" width="56" height="74" rx="16" fill="rgba(115,197,255,0.07)" stroke="#a5ddff" stroke-width="2"></rect>
+                    <g stroke="#73c5ff" stroke-width="2.4" stroke-linecap="round" fill="none" opacity="0.9">
+                      <path d="M32 36 q9 -9 18 0 q9 9 18 0"></path>
+                      <path d="M32 50 q9 -9 18 0 q9 9 18 0"></path>
+                      <path d="M32 64 q9 -9 18 0 q9 9 18 0"></path>
+                      <path d="M32 78 q9 -9 18 0 q9 9 18 0"></path>
+                    </g>
+                    <path
+                      d="M32 36 q9 -9 18 0 q9 9 18 0 M32 50 q9 -9 18 0 q9 9 18 0 M32 64 q9 -9 18 0 q9 9 18 0 M32 78 q9 -9 18 0 q9 9 18 0"
+                      stroke="#eaf8ff"
+                      stroke-width="2.6"
+                      stroke-linecap="round"
+                      fill="none"
+                      stroke-dasharray="2 26"
+                      class="pf-shimmer"></path>
+                    <g stroke="#36a9f5" stroke-width="2" stroke-linecap="round">
+                      <line x1="82" y1="30" x2="88" y2="30"></line>
+                      <line x1="82" y1="44" x2="88" y2="44"></line>
+                      <line x1="82" y1="58" x2="88" y2="58"></line>
+                    </g>
+                  </svg>
+                )}
+                {i === 1 && (
+                  <svg viewBox="0 0 100 100" class="w-full h-full" aria-hidden="true">
+                    <path
+                      d="M50 12 C66 40 78 54 78 67 a28 28 0 1 1 -56 0 C22 54 34 40 50 12 Z"
+                      fill="rgba(0,142,221,0.16)"
+                      stroke="#73c5ff"
+                      stroke-width="2"></path>
+                    <g stroke="#a5ddff" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.85">
+                      <path d="M36 66 q14 -12 28 0"></path>
+                      <path d="M34 76 q16 -12 32 0"></path>
+                      <path d="M40 56 q10 -9 20 0"></path>
+                    </g>
+                    <circle cx="50" cy="68" r="3" fill="#eaf8ff" class="pf-pulse"></circle>
+                  </svg>
+                )}
+                {i === 2 && (
+                  <svg viewBox="0 0 100 100" class="w-full h-full overflow-visible" aria-hidden="true">
+                    <defs>
+                      <linearGradient id="pfVial" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0" stop-color="#36a9f5"></stop>
+                        <stop offset="1" stop-color="#0073bc"></stop>
+                      </linearGradient>
+                      <radialGradient id="pfGlow" cx="0.5" cy="0.5" r="0.5">
+                        <stop offset="0" stop-color="#73c5ff" stop-opacity="0.6"></stop>
+                        <stop offset="1" stop-color="#73c5ff" stop-opacity="0"></stop>
+                      </radialGradient>
+                    </defs>
+                    <circle cx="50" cy="56" r="40" fill="url(#pfGlow)" class="pf-glow"></circle>
+                    <rect x="40" y="9" width="20" height="9" rx="4.5" fill="rgba(115,197,255,0.18)" stroke="#a5ddff" stroke-width="2"></rect>
+                    <rect x="36" y="16" width="28" height="74" rx="13" fill="rgba(15,46,61,0.35)" stroke="#a5ddff" stroke-width="2"></rect>
+                    <rect x="40" y="86" width="20" height="0" rx="9" fill="url(#pfVial)" data-pf-vial></rect>
+                    <circle cx="50" cy="40" r="3.4" fill="#eaf8ff" opacity="0.9"></circle>
+                  </svg>
+                )}
+              </div>
+              <div class="min-w-0">
+                <span class="block text-[0.72rem] font-semibold tracking-[0.12em] uppercase text-phyco-300 mb-1.5">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <h4 class="text-white text-[1.05rem] font-medium tracking-[-0.01em] mb-1.5">{label}</h4>
+                <p class="text-white/64 text-[0.9rem] leading-snug">{notes[i]}</p>
+              </div>
+            </div>
+          </div>
+          {i < stages.length - 1 && (
+            <div class="flex items-center justify-center md:flex-none md:w-[clamp(28px,3vw,56px)]">
+              <div aria-hidden="true" class="conduit conduit--h hidden md:block" data-on="0" data-pf-conduit></div>
+              <div aria-hidden="true" class="conduit conduit--v md:hidden" data-on="0" data-pf-conduit></div>
+            </div>
+          )}
+        </>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Stages fade up when the panel enters view; ambient loops start with it. */
+  :global(html.js) .pf-stage {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  :global(html.js) [data-processflow].is-on .pf-stage {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.7s var(--ease-brand),
+      transform 0.7s var(--ease-brand);
+  }
+  :global(html.js) [data-processflow].is-on .pf-stage[data-pf-stage="1"] {
+    transition-delay: 0.12s;
+  }
+  :global(html.js) [data-processflow].is-on .pf-stage[data-pf-stage="2"] {
+    transition-delay: 0.24s;
+  }
+
+  .pf-shimmer {
+    animation: pfShimmer 3.2s linear infinite;
+  }
+  @keyframes pfShimmer {
+    to {
+      stroke-dashoffset: -56;
+    }
+  }
+
+  .pf-pulse {
+    animation: pfPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pfPulse {
+    0%,
+    100% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  .pf-glow {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pfGlow 3s ease-in-out infinite;
+  }
+  @keyframes pfGlow {
+    0%,
+    100% {
+      transform: scale(0.92);
+      opacity: 0.7;
+    }
+    50% {
+      transform: scale(1.06);
+      opacity: 1;
+    }
+  }
+
+  .pf-shimmer,
+  .pf-pulse,
+  .pf-glow {
+    animation-play-state: paused;
+  }
+  [data-processflow].is-on .pf-shimmer,
+  [data-processflow].is-on .pf-pulse,
+  [data-processflow].is-on .pf-glow {
+    animation-play-state: running;
+  }
+
+  /* Without JS the vial never fills, so show it already full. */
+  :global(html:not(.js)) [data-pf-vial] {
+    y: 44px;
+    height: 42px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(html.js) .pf-stage {
+      opacity: 1;
+      transform: none;
+    }
+    .pf-shimmer,
+    .pf-pulse,
+    .pf-glow {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const root = document.querySelector<HTMLElement>("[data-processflow]");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const activate = (el: HTMLElement) => {
+    el.classList.add("is-on");
+    el.querySelectorAll("[data-pf-conduit]").forEach((c) => c.setAttribute("data-on", "1"));
+    // Extract vial fills as the panel arrives.
+    const vial = el.querySelector("[data-pf-vial]");
+    if (vial) {
+      if (reduce) {
+        vial.setAttribute("y", "44");
+        vial.setAttribute("height", "42");
+      } else {
+        gsap.to(vial, {
+          attr: { y: 44, height: 42 },
+          duration: 1.5,
+          ease: "power4.out",
+          delay: 0.3,
+        });
+      }
+    }
+  };
+
+  if (root && !reduce) {
+    ScrollTrigger.create({
+      trigger: root,
+      start: "top 88%",
+      once: true,
+      onEnter: () => activate(root),
+    });
+  } else if (root) {
+    activate(root);
+  }
+</script>
