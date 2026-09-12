@@ -99,7 +99,7 @@ const links = [
   </div>
 
   <!-- Mobile sheet -->
-  <nav class="nav-sheet sm:hidden" aria-label="Mobile" data-nav-sheet>
+  <nav class="nav-sheet" aria-label="Mobile" data-nav-sheet>
     <div class="px-[var(--gutter)] py-5 grid gap-4">
       {links.map((l) => (
         <a href={l.href} class="text-ink text-lg font-medium" data-nav-close>
@@ -228,6 +228,13 @@ const links = [
   .site-nav.is-open .nav-sheet {
     grid-template-rows: 1fr;
     opacity: 1;
+  }
+  /* Scoped styles outrank Tailwind's `sm:hidden`, so the desktop hide lives
+     here instead of on the class list. */
+  @media (min-width: 640px) {
+    .nav-sheet {
+      display: none;
+    }
   }
 </style>
 
