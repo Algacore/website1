@@ -1,0 +1,134 @@
+---
+// SHELVED — not mounted anywhere. See README.md in this folder before reviving.
+//
+// The pinned extraction sequence: a full-bleed, scrub-driven scene that walks
+// the reader from a field of spirulina filaments, through the filaments
+// converging into the Algacore mark (the closed vessel), to the phycocyanin
+// flood. Pulled out of Vision.astro so the section could stand on its copy.
+//
+// Requires the `#mark` <symbol> from MarkDefs.astro to be present in the page.
+interface Props {
+  /** Small label above the moving headline. */
+  eyebrow: string;
+  /** Three beats, in the order the animation plays them. */
+  stages: [string, string, string];
+}
+const { eyebrow, stages } = Astro.props;
+
+// Filament field for the pinned extraction scene: sine strands laid across the
+// stage, each one a little out of phase with its neighbours.
+const filaments = Array.from({ length: 11 }, (_, i) => {
+  const y = 60 + i * 58;
+  const amp = 16 + (i % 4) * 7;
+  const phase = i * 0.7;
+  const pts = Array.from({ length: 41 }, (_, k) => {
+    const x = (k / 40) * 1200;
+    const yy = y + Math.sin(k / 3.1 + phase) * amp;
+    return `${k === 0 ? "M" : "L"}${x.toFixed(1)} ${yy.toFixed(1)}`;
+  });
+  return pts.join(" ");
+});
+---
+
+<!-- Hidden until the script decides motion is welcome and there is room. -->
+<div class="vseq" data-vseq hidden>
+  <div class="vseq-stage" data-vseq-stage>
+    <svg class="vseq-svg" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <radialGradient id="vseqGlow" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#73c5ff" stop-opacity="0.55"></stop>
+          <stop offset="1" stop-color="#73c5ff" stop-opacity="0"></stop>
+        </radialGradient>
+      </defs>
+      {filaments.map((d) => (
+        <path
+          d={d}
+          fill="none"
+          stroke="#73c5ff"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          opacity="0.5"
+          data-vseq-filament></path>
+      ))}
+      <circle cx="600" cy="350" r="300" fill="url(#vseqGlow)" data-vseq-glow></circle>
+      <svg x="345" y="175" width="510" height="334" viewBox="0 0 1015 664.5" data-vseq-mark style="color:#a5ddff">
+        <use href="#mark"></use>
+      </svg>
+    </svg>
+
+    <div class="vseq-copy">
+      <p class="eyebrow eyebrow--onDark mb-4">{eyebrow}</p>
+      <div class="vseq-labels">
+        {stages.map((stage) => (
+          <h3 class="vseq-label" data-vseq-label>{stage}</h3>
+        ))}
+      </div>
+      <div class="vseq-ticks" aria-hidden="true">
+        {stages.map(() => <span class="vseq-tick" data-vseq-tick></span>)}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .vseq {
+    position: relative;
+    margin-bottom: clamp(56px, 8vw, 104px);
+  }
+  .vseq-stage {
+    position: relative;
+    height: 100svh;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    background: var(--color-cyano-900);
+    display: flex;
+    align-items: flex-end;
+  }
+  .vseq-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .vseq-copy {
+    position: relative;
+    z-index: 1;
+    padding: clamp(28px, 5vw, 64px);
+    color: #fff;
+  }
+  .vseq-labels {
+    position: relative;
+    min-height: clamp(2.6rem, 6vw, 4rem);
+  }
+  .vseq-label {
+    position: absolute;
+    inset: 0;
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: clamp(1.9rem, 5vw, 3.4rem);
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .vseq-ticks {
+    display: flex;
+    gap: 10px;
+    margin-top: clamp(20px, 3vw, 32px);
+  }
+  .vseq-tick {
+    width: 46px;
+    height: 2px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.22);
+    transition: background-color 0.4s var(--ease-brand);
+  }
+  .vseq-tick.is-on {
+    background: var(--color-phyco-300);
+  }
+</style>
+
+<script>
+  import { mountExtractionSequence } from "./extraction-sequence";
+
+  const seq = document.querySelector<HTMLElement>("[data-vseq]");
+  if (seq) mountExtractionSequence(seq);
+</script>

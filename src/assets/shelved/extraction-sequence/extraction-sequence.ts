@@ -4,6 +4,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
+ * SHELVED - not mounted anywhere. See README.md in this folder.
+ *
  * The "extraction" sequence: a pinned, scrub-driven scene that walks the
  * reader from a field of spirulina filaments, through the filaments converging
  * into the Algacore mark (the closed vessel), to the phycocyanin flood.
@@ -12,7 +14,7 @@ gsap.registerPlugin(ScrollTrigger);
  * with reduced motion simply reads the static Vision cards instead of staring
  * at a half-built scene.
  */
-export function mountVisionSequence(root: HTMLElement) {
+export function mountExtractionSequence(root: HTMLElement) {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   if (!window.matchMedia("(min-width: 768px)").matches) return;
 
