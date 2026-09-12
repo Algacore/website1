@@ -33,6 +33,8 @@ const origin = Astro.site ?? new URL(Astro.url.origin);
 const absAlt = (l: Lang) => new URL(altPath(l), origin).toString();
 
 const pageTitle = title ?? c.meta.title;
+// Browser tab shows brand plus sector; social cards keep the full title.
+const tabTitle = lang === "en" ? "Algacore Biotechnology" : "Algacore Biotecnologia";
 const pageDesc = description ?? c.meta.desc;
 
 // The single-page sections live on the home route, so the nav anchors have to
@@ -46,7 +48,7 @@ const navBase = onHome ? "" : homePath(lang);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{pageTitle}</title>
+    <title>{tabTitle}</title>
     <meta name="description" content={pageDesc} />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonical} />
