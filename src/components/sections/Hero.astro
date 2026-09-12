@@ -62,7 +62,8 @@ const { hero } = Astro.props;
 
     <!-- Credibility strip: full-width baseline rail of qualitative proof. -->
     <div class="hero-rise mt-[clamp(44px,6vw,76px)]" style="--d:360">
-      <hr class="rule-fade rule-fade--onDark mb-[22px]" />
+      <hr class="rule-fade rule-fade--onDark mb-[18px]" />
+      <p class="eyebrow eyebrow--onDark text-center mb-[14px]">{hero.proofLabel}</p>
       <ul class="list-none m-0 p-0 flex flex-wrap justify-center gap-x-[clamp(20px,4vw,44px)] gap-y-3">
         {hero.proof.map((p) => (
           <li class="proof-chip">{p}</li>

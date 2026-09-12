@@ -1,7 +1,7 @@
 ---
 import "@/styles/global.css";
 import { getContent } from "@/lib/content";
-import { localeAttr, homePath, type Lang } from "@/i18n/config";
+import { localeAttr, homePath, legalPath, privacyPath, type Lang } from "@/i18n/config";
 import MarkDefs from "@/components/MarkDefs.astro";
 import Footer from "@/components/Footer.astro";
 import Nav from "@/components/react/Nav.tsx";
@@ -9,13 +9,28 @@ import SiteEffects from "@/components/react/SiteEffects.tsx";
 
 interface Props {
   lang: Lang;
+  /** Overrides for subpages (legal notice, privacy). */
+  title?: string;
+  description?: string;
+  /** Per-language path of this page, for hreflang alternates. */
+  altPath?: (l: Lang) => string;
+  /** Anchor the skip link jumps to on this page. */
+  skipTarget?: string;
 }
-const { lang } = Astro.props;
+const { lang, title, description, altPath = homePath, skipTarget = "#vision" } = Astro.props;
 const c = getContent(lang);
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).toString();
 const altLang = lang === "pt" ? "en" : "pt";
 const origin = Astro.site ?? new URL(Astro.url.origin);
-const absHome = (l: Lang) => new URL(homePath(l), origin).toString();
+const absAlt = (l: Lang) => new URL(altPath(l), origin).toString();
+
+const pageTitle = title ?? c.meta.title;
+const pageDesc = description ?? c.meta.desc;
+
+// The single-page sections live on the home route, so the nav anchors have to
+// be prefixed with the home path whenever we are rendering a subpage.
+const onHome = Astro.url.pathname.replace(/\/$/, "") === homePath(lang).replace(/\/$/, "");
+const navBase = onHome ? "" : homePath(lang);
 ---
 
 <!doctype html>
@@ -23,13 +38,13 @@ const absHome = (l: Lang) => new URL(homePath(l), origin).toString();
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{c.meta.title}</title>
-    <meta name="description" content={c.meta.desc} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDesc} />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang="pt-BR" href={absHome("pt")} />
-    <link rel="alternate" hreflang="en" href={absHome("en")} />
-    <link rel="alternate" hreflang="x-default" href={absHome("pt")} />
+    <link rel="alternate" hreflang="pt-BR" href={absAlt("pt")} />
+    <link rel="alternate" hreflang="en" href={absAlt("en")} />
+    <link rel="alternate" hreflang="x-default" href={absAlt("pt")} />
 
     <!-- Type system: Outfit (body/UI/wordmark) + Fraunces (serif display). -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -50,8 +65,8 @@ const absHome = (l: Lang) => new URL(homePath(l), origin).toString();
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Algacore" />
     <meta property="og:url" content={canonical} />
-    <meta property="og:title" content={c.meta.title} />
-    <meta property="og:description" content={c.meta.desc} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDesc} />
     <meta property="og:locale" content={localeAttr[lang].replace("-", "_")} />
     <meta property="og:locale:alternate" content={localeAttr[altLang].replace("-", "_")} />
     <meta property="og:image" content="https://algacore.com.br/brand/og/og-card.png" />
@@ -59,26 +74,25 @@ const absHome = (l: Lang) => new URL(homePath(l), origin).toString();
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Algacore" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={c.meta.title} />
-    <meta name="twitter:description" content={c.meta.desc} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDesc} />
     <meta name="twitter:image" content="https://algacore.com.br/brand/og/og-card.png" />
     <meta name="twitter:image:alt" content="Algacore" />
 
-    <!-- Structured data -->
+    <!-- Structured data. Algacore is a project in formation, so this claims no
+         registered entity, no founding date and no service on offer. -->
     <script type="application/ld+json" set:html={JSON.stringify([
       {
         "@context": "https://schema.org",
         "@type": "Organization",
         "name": "Algacore",
         "alternateName": ["Alga Core", "Core Alga", "AlgaCore", "Algacore Biotecnologia", "Algacore Ficocianina"],
-        "legalName": "ALGACORE Biotecnologia Ltda",
         "url": "https://algacore.com.br",
         "logo": "https://algacore.com.br/brand/square/algacore-logo-square.png",
         "description": lang === "pt"
-          ? "Fornecedor B2B de ficocianina de alto grau, cultivada em fotobiorreatores fechados no Brasil, rumo ao padrão farmacêutico."
-          : "B2B supplier of high-grade phycocyanin cultivated in closed photobioreactors in Brazil, building toward a pharmaceutical standard.",
+          ? "Projeto de biotecnologia B2B em constituição, desenvolvendo o cultivo de spirulina em fotobiorreatores fechados para a extração de ficocianina de alto grau no Brasil."
+          : "B2B biotechnology venture in formation, developing spirulina cultivation in closed photobioreactors for the extraction of high-grade phycocyanin in Brazil.",
         "email": "contato@algacore.com.br",
-        "foundingDate": "2024",
         "areaServed": ["BR", "LATAM"],
         "knowsAbout": ["phycocyanin", "spirulina", "photobioreactor", "ficocianina", "biotechnology"],
         "sameAs": []
@@ -89,17 +103,6 @@ const absHome = (l: Lang) => new URL(homePath(l), origin).toString();
         "name": "Algacore",
         "alternateName": ["Alga Core", "Core Alga", "Algacore Ficocianina"],
         "url": "https://algacore.com.br"
-      },
-      {
-        "@context": "https://schema.org",
-        "@type": "Service",
-        "name": lang === "pt" ? "Ficocianina de alto grau B2B" : "High-grade phycocyanin B2B supply",
-        "provider": { "@type": "Organization", "name": "Algacore" },
-        "description": lang === "pt"
-          ? "Fornecimento B2B de ficocianina rastreável extraída de spirulina cultivada em fotobiorreatores fechados, em escala industrial no Brasil."
-          : "B2B supply of traceable phycocyanin extracted from spirulina cultivated in closed photobioreactors at industrial scale in Brazil.",
-        "areaServed": "BR",
-        "serviceType": lang === "pt" ? "Ingrediente biotecnológico B2B" : "B2B biotechnology ingredient"
       }
     ])} />
 
@@ -109,7 +112,7 @@ const absHome = (l: Lang) => new URL(homePath(l), origin).toString();
   </head>
   <body>
     <div class="scroll-progress" aria-hidden="true"></div>
-    <a class="skip-link" href="#vision">{c.a11y.skip}</a>
+    <a class="skip-link" href={skipTarget}>{c.a11y.skip}</a>
 
     <MarkDefs />
 
@@ -119,15 +122,24 @@ const absHome = (l: Lang) => new URL(homePath(l), origin).toString();
       navTeam={c.nav.team}
       navContact={c.nav.contact}
       langLabel={c.langToggleLabel}
-      ptHref={homePath("pt")}
-      enHref={homePath("en")}
+      basePath={navBase}
+      homeHref={homePath(lang)}
+      ptHref={altPath("pt")}
+      enHref={altPath("en")}
     />
 
     <main>
       <slot />
     </main>
 
-    <Footer copy={c.footer.copy} mail={c.footer.mail} />
+    <Footer
+      copy={c.footer.copy}
+      mail={c.footer.mail}
+      legalLabel={c.footer.legal}
+      legalHref={legalPath(lang)}
+      privacyLabel={c.footer.privacy}
+      privacyHref={privacyPath(lang)}
+    />
 
     <SiteEffects client:load />
   </body>

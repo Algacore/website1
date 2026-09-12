@@ -9,9 +9,14 @@ interface Props {
 }
 const { science } = Astro.props;
 
-// Parse the localized "~15%" string into prefix / number / suffix for the counter.
-const m = science.stat2num.match(/^(.*?)(\d+)(.*)$/);
-const stat2 = m ? { prefix: m[1], to: Number(m[2]), suffix: m[3] } : { prefix: "", to: 15, suffix: "%" };
+// Parse a localized figure ("~15%", "E40+") into prefix / number / suffix for
+// the counter, so the copy stays in content.ts and the markup stays generic.
+const parse = (raw: string, fallback: number) => {
+  const m = raw.match(/^(.*?)(\d+)(.*)$/);
+  return m ? { prefix: m[1], to: Number(m[2]), suffix: m[3] } : { prefix: "", to: fallback, suffix: "" };
+};
+const stat2 = parse(science.stat2num, 15);
+const stat3 = parse(science.stat3num, 40);
 
 const sig = science.sig;
 ---
@@ -35,10 +40,10 @@ const sig = science.sig;
         <span class="block mt-3.5 text-muted max-w-[30ch]">{science.stat2}</span>
       </article>
 
-      <!-- Stat 3 -->
+      <!-- Stat 3: a declared design target, not a measured figure. -->
       <article class="card card--hover card--sheen reveal md:col-span-2 pt-[26px]" style="--i:2">
         <span class="absolute top-0 left-0 w-14 h-1 bg-accent rounded-br-[3px]" aria-hidden="true"></span>
-        <Counter client:visible to={100} suffix="%" />
+        <Counter client:visible to={stat3.to} prefix={stat3.prefix} suffix={stat3.suffix} />
         <span class="block mt-3.5 text-muted max-w-[30ch]">{science.stat3}</span>
       </article>
 
@@ -60,6 +65,8 @@ const sig = science.sig;
         </p>
       </article>
     </div>
+
+    <p class="reveal text-muted mt-5 max-w-[68ch] text-[0.82rem] leading-relaxed">{science.statsNote}</p>
 
     <!-- Optical signature panel -->
     <figure

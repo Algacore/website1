@@ -1,0 +1,21 @@
+---
+import Base from "@/layouts/Base.astro";
+import LegalDoc from "@/components/LegalDoc.astro";
+import { getContent } from "@/lib/content";
+import { homePath, legalPath } from "@/i18n/config";
+
+export const prerender = true;
+
+const c = getContent("en");
+const doc = c.legalPage;
+---
+
+<Base
+  lang="en"
+  title={`${doc.title} | Algacore`}
+  description="Corporate status, trademark, forward-looking statements and absence of any offer. Algacore is a venture in formation."
+  altPath={legalPath}
+  skipTarget="#doc"
+>
+  <LegalDoc doc={doc} homeHref={homePath("en")} />
+</Base>

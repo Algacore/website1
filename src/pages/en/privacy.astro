@@ -1,0 +1,21 @@
+---
+import Base from "@/layouts/Base.astro";
+import LegalDoc from "@/components/LegalDoc.astro";
+import { getContent } from "@/lib/content";
+import { homePath, privacyPath } from "@/i18n/config";
+
+export const prerender = true;
+
+const c = getContent("en");
+const doc = c.privacyPage;
+---
+
+<Base
+  lang="en"
+  title={`${doc.title} | Algacore`}
+  description="How Algacore handles the personal data sent through the contact form, under the Brazilian LGPD."
+  altPath={privacyPath}
+  skipTarget="#doc"
+>
+  <LegalDoc doc={doc} homeHref={homePath("en")} />
+</Base>

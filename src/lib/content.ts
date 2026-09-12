@@ -1,10 +1,22 @@
 // ============================================================
 // ALGACORE — structured site content (PT default + EN)
-// Copy ported verbatim from the original draft. House rule: no em dashes
-// (—) or en dashes (–) anywhere in page copy, both languages. Plain hyphens
-// are fine in compound words and numeric ranges only.
+// House rule: no em dashes (—) or en dashes (–) anywhere in page copy, both
+// languages. Plain hyphens are fine in compound words and numeric ranges only.
+//
+// Legal posture: Algacore is a project in formation. No legal entity, no CNPJ,
+// no INPI filing, no plant in operation, no product for sale. Every claim about
+// productive capacity is written as project or target, never as present fact.
+// See CLAUDE.md ("Postura jurídica") before editing any of this.
 // ============================================================
 import type { Lang } from "@/i18n/config";
+
+export interface LegalDoc {
+  title: string;
+  updated: string;
+  lede: string;
+  sections: { title: string; body: string[] }[];
+  back: string;
+}
 
 export interface SiteContent {
   meta: { title: string; desc: string };
@@ -16,6 +28,7 @@ export interface SiteContent {
     sub: string;
     ctaInvest: string;
     ctaPartner: string;
+    proofLabel: string;
     proof: string[];
   };
   band: { tagline: string };
@@ -33,6 +46,7 @@ export interface SiteContent {
     stages: [string, string, string];
     flowEyebrow: string;
     flowNote: [string, string, string];
+    processNote: string;
     c1title: string;
     c1body: string;
     c2title: string;
@@ -59,7 +73,9 @@ export interface SiteContent {
     stat1: string; // contains <em>
     stat2num: string;
     stat2: string;
+    stat3num: string;
     stat3: string;
+    statsNote: string;
     accent: string;
     sig: {
       eyebrow: string;
@@ -99,6 +115,7 @@ export interface SiteContent {
     partnerTitle: string;
     partnerBody: string;
     partnerCta: string;
+    disclaimer: string;
   };
   form: {
     interest: string;
@@ -109,33 +126,39 @@ export interface SiteContent {
     company: string;
     email: string;
     message: string;
+    ack: string;
+    privacyNote: string;
+    privacyLink: string;
     send: string;
     sending: string;
     confirm: string;
     error: string;
   };
-  footer: { copy: string; mail: string };
+  footer: { copy: string; mail: string; legal: string; privacy: string };
+  legalPage: LegalDoc;
+  privacyPage: LegalDoc;
   langToggleLabel: string;
 }
 
 const pt: SiteContent = {
   meta: {
-    title: "Ficocianina Farmacêutica | Algacore Biotecnologia B2B",
-    desc: "Algacore (Alga Core) é fornecedora B2B de ficocianina de alto grau e rastreável, cultivada em fotobiorreatores fechados no Brasil. Spirulina em escala industrial, rumo ao padrão farmacêutico e ANVISA GMP.",
+    title: "Ficocianina de alto grau | Algacore Biotecnologia B2B",
+    desc: "Projeto de biotecnologia B2B em constituição, desenvolvendo o cultivo de spirulina em fotobiorreatores fechados para a extração de ficocianina de alto grau no Brasil.",
   },
   a11y: { skip: "Pular para o conteúdo" },
   nav: { team: "Quem somos", contact: "Contato" },
   hero: {
-    eyebrow: "Biotecnologia B2B",
+    eyebrow: "Biotecnologia B2B, em constituição",
     title: "Construindo o futuro<br>da <em>ficocianina</em>",
-    sub: "Spirulina em escala industrial, cultivada em fotobiorreatores fechados para a extração de ficocianina de alto grau, com confiança.",
+    sub: "Estamos desenvolvendo o cultivo de spirulina em fotobiorreatores fechados, em escala industrial, para extrair ficocianina de alto grau.",
     ctaInvest: "Para investidores",
     ctaPartner: "Para parceiros",
-    proof: ["Fotobiorreatores fechados", "Rastreável por lote", "Feito no Brasil sob ANVISA"],
+    proofLabel: "Princípios de projeto",
+    proof: ["Cultivo fechado", "Rastreabilidade por lote", "Produção pretendida no Brasil"],
   },
   band: {
     tagline:
-      "Uma empresa de biotecnologia B2B desenvolvendo a tecnologia para produzir ficocianina de alto grau e rastreável em escala, com o padrão farmacêutico como objetivo final.",
+      "Um projeto de biotecnologia B2B em constituição, desenvolvendo a tecnologia para produzir ficocianina de alto grau e rastreável em escala, com o padrão farmacêutico como objetivo final.",
   },
   market: {
     eyebrow: "Por que agora",
@@ -172,6 +195,8 @@ const pt: SiteContent = {
       "Colhida e concentrada, lote a lote",
       "Extraída e purificada",
     ],
+    processNote:
+      "Fluxo pretendido. Nenhuma unidade produtiva está em operação nesta fase.",
     c1title: "Por que ficocianina",
     c1body:
       "O azul é uma das cores mais raras na natureza, e a indústria recorreu por décadas a corantes sintéticos derivados de petróleo, hoje sob pressão regulatória crescente. A ficocianina é um azul de origem natural, solúvel em água, reconhecido como corante seguro por agências como ANVISA, FDA e União Europeia.",
@@ -181,26 +206,26 @@ const pt: SiteContent = {
   },
   approach: {
     eyebrow: "A abordagem",
-    title: "Fotobiorreatores fechados, controlados da inoculação à extração",
+    title: "Projetado em torno do fotobiorreator fechado, da inoculação à extração",
     cards: [
       {
         title: "Cultivo fechado",
-        body: "Cultura isolada do ambiente externo, com parâmetros mantidos em faixas definidas. Tudo projetado para consistência, da inoculação à colheita.",
+        body: "O desenho prevê a cultura isolada do ambiente externo, com parâmetros mantidos em faixas definidas. Tudo pensado para consistência, da inoculação à colheita.",
       },
       {
         title: "Rastreável por princípio",
         body: "Cada lote pensado para ser documentado de ponta a ponta, do lote acabado de volta ao seu ciclo de cultivo.",
       },
       {
-        title: "Feito no Brasil",
-        body: "Sob jurisdição da ANVISA e próximo da demanda sul-americana, encurtando o caminho até o mercado regional.",
+        title: "Pensado para o Brasil",
+        body: "A operação é planejada para o Brasil, sob o marco regulatório da ANVISA e perto da demanda sul-americana. Nenhuma licença ou certificação foi obtida até aqui.",
       },
     ],
     compareTitle: "Vaso fechado, não tanque aberto",
     compareLede:
-      "Um fotobiorreator é um vaso fechado para cultivar microalgas sob condições controladas. A maior parte da spirulina ainda é cultivada em tanques abertos, expostos ao ambiente. Nós seguimos o caminho fechado.",
+      "Um fotobiorreator é um vaso fechado para cultivar microalgas sob condições controladas. A maior parte da spirulina ainda é cultivada em tanques abertos, expostos ao ambiente. Nós seguimos o caminho fechado. A coluna da Algacore descreve a arquitetura pretendida, não uma instalação existente.",
     pondAlt:
-      "Tanque aberto tipo raceway visto de cima, um canal oval em volta de uma divisória central, descoberto e exposto ao sol, à poeira e à evaporação.",
+      "Ilustração de um tanque aberto tipo raceway visto de cima, um canal oval em volta de uma divisória central, descoberto e exposto ao sol, à poeira e à evaporação.",
     pondTag: "Convencional",
     pondLabel: "Tanque aberto (raceway)",
     pond: [
@@ -209,13 +234,13 @@ const pt: SiteContent = {
       "Condições variáveis, lote a lote",
     ],
     pbrAlt:
-      "Fotobiorreator tubular: tubos de vidro paralelos e empilhados num circuito serpentina, com a cultura circulando sob um painel de luz controlado, parâmetros definidos no controlador e a ficocianina retirada no topo.",
-    pbrTag: "Algacore",
+      "Ilustração de um fotobiorreator tubular: tubos de vidro paralelos e empilhados num circuito serpentina, com a cultura circulando sob um painel de luz controlado, parâmetros definidos no controlador e a ficocianina retirada no topo.",
+    pbrTag: "Algacore (projeto)",
     pbrLabel: "Fotobiorreator tubular",
     pbr: [
-      "Selado do ambiente externo",
-      "Luz, CO2, temperatura e fluxo sob controle",
-      "Consistência projetada, lote a lote",
+      "Alvo: vedação ao ambiente externo",
+      "Alvo: luz, CO2, temperatura e fluxo sob controle",
+      "Alvo: consistência lote a lote",
     ],
   },
   science: {
@@ -224,14 +249,17 @@ const pt: SiteContent = {
     stat1: "Teor de proteína da biomassa seca de <em>Arthrospira platensis</em> (aproximado)",
     stat2num: "até ~15%",
     stat2: "Participação da ficocianina na biomassa seca (aproximada)",
-    stat3: "Concebido para cultivo em sistema fechado",
-    accent: "Pureza rastreável, do primeiro lote.",
+    stat3num: "E40+",
+    stat3: "Força de cor alvo para os concentrados de ficocianina",
+    statsNote:
+      "Os dois primeiros valores vêm da literatura sobre Arthrospira platensis. O terceiro é alvo de projeto. Nenhum deles é resultado analítico da Algacore.",
+    accent: "O objetivo: pureza rastreável desde o primeiro lote.",
     sig: {
       eyebrow: "Assinatura óptica",
       title: "Identificável pela própria luz",
       body: "A ficocianina absorve luz com um pico característico próximo de 620 nm. É essa assinatura, e a nitidez dela, que separa o grau alimentício do grau farmacêutico.",
       alt: "Curva de absorção da ficocianina, com pico próximo de 620 nanômetros.",
-      caption: "Curva ilustrativa de absorção. Alvos de projeto.",
+      caption: "Curva ilustrativa de absorção. Alvos de projeto, não resultados medidos.",
       peakLabel: "≈ 620 nm",
       rows: [
         { k: "Pico de absorção", v: "≈ 620 nm", note: "característico" },
@@ -248,7 +276,7 @@ const pt: SiteContent = {
       {
         status: "Em desenvolvimento",
         title: "Tecnologia de processo",
-        body: "Engenharia do cultivo em fotobiorreatores fechados e da extração da ficocianina.",
+        body: "Engenharia do cultivo em fotobiorreatores fechados e da extração da ficocianina, junto da constituição da empresa e da captação inicial.",
       },
       {
         status: "Próxima etapa",
@@ -272,7 +300,7 @@ const pt: SiteContent = {
         photo: "/team/raul.jpg",
         role: "Cofundador · Ciência e operações",
         cred: "Farmacêutico-Bioquímico (FCF-USP) · Administração (FEA-USP)",
-        bio: "Lidera o desenvolvimento técnico-científico e a operação da empresa, do desenho do processo de cultivo e extração ao posicionamento da marca.",
+        bio: "Lidera o desenvolvimento técnico-científico e a operação do projeto, do desenho do processo de cultivo e extração ao posicionamento da marca.",
         mail: "raulbarros@algacore.com.br",
       },
       {
@@ -288,15 +316,17 @@ const pt: SiteContent = {
   connect: {
     eyebrow: "Vamos conversar",
     title: "Construa a algacore conosco",
-    lede: "Estamos formando nossas parcerias fundadoras, com investidores que apostam em deep tech e parceiros prontos para garantir fornecimento futuro.",
+    lede: "Estamos no começo, em fase de constituição e captação. Queremos conversar com quem acompanha deep tech de perto, seja para investir mais adiante, seja para ajudar a definir a especificação do produto.",
     investTitle: "Investidores",
     investBody:
-      "Apoie uma biotech B2B rumo à ficocianina de grau farmacêutico. Fale com os fundadores sobre a rodada e o roadmap.",
-    investCta: "Falar sobre investir →",
+      "Converse com os fundadores sobre o projeto, a tecnologia e o plano. Nada neste site é oferta de investimento.",
+    investCta: "Falar com os fundadores →",
     partnerTitle: "Parceiros & clientes",
     partnerBody:
-      "Reserve fornecimento futuro e ajude a definir a especificação com uma LOI ou MOU. Conte-nos sua aplicação.",
+      "Conte-nos sua aplicação e ajude a definir a especificação. Não há produto disponível hoje, e nenhum fornecimento pode ser contratado nesta fase.",
     partnerCta: "Falar sobre parceria →",
+    disclaimer:
+      "Este site tem caráter exclusivamente informativo. Não constitui oferta, convite ou solicitação de investimento, nem oferta pública de valores mobiliários, e não representa promessa de resultado ou rentabilidade. A Algacore está em fase de constituição e não comercializa produtos.",
   },
   form: {
     interest: "Tenho interesse como",
@@ -307,36 +337,163 @@ const pt: SiteContent = {
     company: "Empresa / organização",
     email: "E-mail",
     message: "Mensagem",
+    ack: "Entendo que a Algacore está em constituição, que este contato não constitui oferta de investimento nem de produto, e que nenhum fornecimento está disponível hoje.",
+    privacyNote: "Usamos seus dados apenas para responder a este contato.",
+    privacyLink: "Política de Privacidade",
     send: "Enviar",
     sending: "Enviando...",
     confirm: "Obrigado. Sua mensagem foi recebida e entraremos em contato.",
     error: "Não foi possível enviar agora. Tente novamente ou escreva para contato@algacore.com.br.",
   },
   footer: {
-    copy: "© 2026 ALGACORE Biotecnologia Ltda",
+    copy: "Algacore 2026",
     mail: "contato@algacore.com.br",
+    legal: "Aviso legal",
+    privacy: "Privacidade",
+  },
+  legalPage: {
+    title: "Aviso legal",
+    updated: "Atualizado em setembro de 2026",
+    lede: "Este aviso descreve o que a Algacore é hoje e o que este site é, para que ninguém saia daqui com a impressão errada.",
+    sections: [
+      {
+        title: "Natureza deste site",
+        body: [
+          "Este site é material informativo sobre um projeto em desenvolvimento. Ele não vende nada, não recebe pagamentos e não formaliza contratos. O único recurso interativo é um formulário de contato.",
+        ],
+      },
+      {
+        title: "Situação societária",
+        body: [
+          "A Algacore ainda não foi constituída. Não existe sociedade registrada, CNPJ, inscrição estadual ou inscrição municipal vinculada ao nome Algacore. O projeto é conduzido pelos dois fundadores, pessoas físicas, e está em fase de constituição e captação de recursos.",
+          "Nenhuma informação deste site deve ser lida como declaração de existência de pessoa jurídica.",
+        ],
+      },
+      {
+        title: "Marca",
+        body: [
+          "O nome Algacore, o símbolo e o logotipo são sinais em uso pelo projeto. Não há registro concedido nem pedido depositado no INPI até esta data. Por isso o site não usa símbolos de marca registrada.",
+        ],
+      },
+      {
+        title: "Declarações prospectivas",
+        body: [
+          "Boa parte do conteúdo descreve planos, alvos de engenharia e intenções. São projeções, não resultados. Elas dependem da constituição da empresa, da captação de recursos, do desenvolvimento técnico e de aprovações regulatórias, e podem mudar ou não se concretizar.",
+        ],
+      },
+      {
+        title: "Isto não é oferta de valores mobiliários",
+        body: [
+          "Nada neste site constitui oferta, convite ou solicitação de investimento, oferta pública de valores mobiliários, ou promessa de retorno ou rentabilidade.",
+          "Qualquer conversa com investidores acontece fora deste site, de forma individual e com a documentação apropriada.",
+        ],
+      },
+      {
+        title: "Isto não é oferta de produto",
+        body: [
+          "A Algacore não produz, não comercializa e não fornece ficocianina, spirulina ou qualquer outro produto nesta fase. Não há estoque, catálogo, preço ou prazo de entrega, e nenhum pedido pode ser aceito.",
+        ],
+      },
+      {
+        title: "Situação regulatória",
+        body: [
+          "A Algacore não possui autorização de funcionamento, licença sanitária, registro de produto ou certificação de Boas Práticas de Fabricação perante a ANVISA ou qualquer outra autoridade. As menções a ANVISA e a boas práticas descrevem o caminho regulatório pretendido, não uma situação já alcançada.",
+        ],
+      },
+      {
+        title: "Imagens e dados",
+        body: [
+          "As ilustrações de fotobiorreatores, tanques e curvas de absorção são representações conceituais. Não são fotografias de instalações da Algacore nem resultados analíticos próprios. Os dados de composição da spirulina vêm da literatura científica sobre Arthrospira platensis.",
+        ],
+      },
+      {
+        title: "Contato",
+        body: ["Dúvidas sobre este aviso: contato@algacore.com.br."],
+      },
+    ],
+    back: "Voltar para a home",
+  },
+  privacyPage: {
+    title: "Política de Privacidade",
+    updated: "Atualizado em setembro de 2026",
+    lede: "Como tratamos os dados pessoais que você nos envia pelo formulário deste site.",
+    sections: [
+      {
+        title: "Quem é o controlador",
+        body: [
+          "Enquanto a sociedade não é constituída, os controladores dos dados são os fundadores do projeto, Raul Paes de Barros e Rodrigo Gaspar, pessoas físicas. Quando a empresa for constituída, ela assumirá essa posição e esta política será atualizada.",
+        ],
+      },
+      {
+        title: "Quais dados coletamos",
+        body: [
+          "Apenas o que você digita no formulário de contato: nome, empresa ou organização, e-mail, mensagem, o tipo de interesse selecionado e o idioma da página.",
+          "Não usamos cookies de rastreamento, não há ferramenta de analytics e não montamos perfil de navegação.",
+        ],
+      },
+      {
+        title: "Para que usamos",
+        body: [
+          "Para ler sua mensagem e responder. Nada além disso. Não vendemos, não alugamos e não cedemos seus dados a terceiros com finalidade comercial.",
+        ],
+      },
+      {
+        title: "Base legal",
+        body: [
+          "O envio do formulário é um ato voluntário. O tratamento se apoia no consentimento e no legítimo interesse em responder a um contato iniciado por você, nos termos do art. 7º da Lei 13.709/2018 (LGPD).",
+        ],
+      },
+      {
+        title: "Com quem os dados são compartilhados",
+        body: [
+          "O formulário é processado pelo Formspree, serviço de terceiro com operação nos Estados Unidos. Ao enviar, seus dados transitam e ficam armazenados nesse serviço, o que caracteriza transferência internacional de dados.",
+          "As fontes tipográficas são carregadas do Google Fonts, o que expõe seu endereço IP ao Google no momento em que a página carrega.",
+        ],
+      },
+      {
+        title: "Por quanto tempo guardamos",
+        body: [
+          "Mantemos a mensagem enquanto a conversa fizer sentido e pelo tempo necessário ao histórico do projeto. Você pode pedir a exclusão a qualquer momento.",
+        ],
+      },
+      {
+        title: "Seus direitos",
+        body: [
+          "A LGPD garante confirmação de tratamento, acesso, correção, anonimização, portabilidade, eliminação e revogação do consentimento, entre outros (art. 18).",
+          "Para exercer qualquer um deles, escreva para contato@algacore.com.br. Respondemos no prazo legal.",
+        ],
+      },
+      {
+        title: "Contato",
+        body: [
+          "O encarregado pelo tratamento de dados, nesta fase, são os próprios fundadores, pelo e-mail contato@algacore.com.br.",
+        ],
+      },
+    ],
+    back: "Voltar para a home",
   },
   langToggleLabel: "Idioma / Language",
 };
 
 const en: SiteContent = {
   meta: {
-    title: "Pharmaceutical Phycocyanin Supplier | Algacore B2B Biotech",
-    desc: "Algacore (Alga Core) is a B2B supplier of high-grade, traceable phycocyanin from closed photobioreactors in Brazil. Industrial-scale spirulina cultivation building toward pharmaceutical purity and ANVISA GMP.",
+    title: "High-Grade Phycocyanin | Algacore B2B Biotech",
+    desc: "A B2B biotechnology venture in formation, developing spirulina cultivation in closed photobioreactors for the extraction of high-grade phycocyanin in Brazil.",
   },
   a11y: { skip: "Skip to content" },
   nav: { team: "Who we are", contact: "Contact" },
   hero: {
-    eyebrow: "B2B biotechnology",
+    eyebrow: "B2B biotechnology, in formation",
     title: "Building the future<br>of <em>phycocyanin</em>",
-    sub: "Industrial-scale spirulina, cultivated in closed photobioreactors for the extraction of high-grade phycocyanin, with confidence.",
+    sub: "We are developing industrial-scale spirulina cultivation in closed photobioreactors, for the extraction of high-grade phycocyanin.",
     ctaInvest: "For investors",
     ctaPartner: "For partners",
-    proof: ["Closed photobioreactors", "Traceable by batch", "Built in Brazil under ANVISA"],
+    proofLabel: "Design principles",
+    proof: ["Closed cultivation", "Batch traceability", "Production planned in Brazil"],
   },
   band: {
     tagline:
-      "A B2B biotechnology company developing the technology to produce high-grade, traceable phycocyanin at scale, with pharmaceutical grade as the ultimate goal.",
+      "A B2B biotechnology venture in formation, developing the technology to produce high-grade, traceable phycocyanin at scale, with pharmaceutical grade as the ultimate goal.",
   },
   market: {
     eyebrow: "Why now",
@@ -373,6 +530,7 @@ const en: SiteContent = {
       "Harvested and concentrated, batch by batch",
       "Extracted and purified",
     ],
+    processNote: "Intended process. No production unit is operating at this stage.",
     c1title: "Why phycocyanin",
     c1body:
       "Blue is one of the rarest colors in nature, and industry leaned for decades on synthetic dyes derived from petroleum, now under growing regulatory pressure. Phycocyanin is a blue of natural origin, water-soluble, recognized as a safe colorant by agencies including ANVISA, the FDA and the European Union.",
@@ -382,26 +540,26 @@ const en: SiteContent = {
   },
   approach: {
     eyebrow: "The approach",
-    title: "Closed photobioreactors, controlled from inoculation to extraction",
+    title: "Designed around the closed photobioreactor, from inoculation to extraction",
     cards: [
       {
         title: "Closed cultivation",
-        body: "The culture is isolated from the open environment, with parameters held within defined ranges. It is engineered for consistency from inoculation to harvest.",
+        body: "The design keeps the culture isolated from the open environment, with parameters held within defined ranges. It is engineered for consistency from inoculation to harvest.",
       },
       {
         title: "Traceable by design",
         body: "Every batch designed to be documented end to end, from a finished lot back to its cultivation cycle.",
       },
       {
-        title: "Built in Brazil",
-        body: "Under ANVISA jurisdiction and close to South American demand, shortening the path into the regional market.",
+        title: "Planned for Brazil",
+        body: "The operation is planned for Brazil, under the ANVISA regulatory framework and close to South American demand. No license or certification has been obtained to date.",
       },
     ],
     compareTitle: "Sealed vessel, not open pond",
     compareLede:
-      "A photobioreactor is a closed vessel for growing microalgae under controlled conditions. Most spirulina is still grown in open ponds, exposed to the environment. We take the closed path.",
+      "A photobioreactor is a closed vessel for growing microalgae under controlled conditions. Most spirulina is still grown in open ponds, exposed to the environment. We take the closed path. The Algacore column describes the intended architecture, not an existing facility.",
     pondAlt:
-      "Open raceway pond seen from above, an oval channel looping around a central divider, uncovered and exposed to sun, dust and evaporation.",
+      "Illustration of an open raceway pond seen from above, an oval channel looping around a central divider, uncovered and exposed to sun, dust and evaporation.",
     pondTag: "Conventional",
     pondLabel: "Open pond (raceway)",
     pond: [
@@ -410,13 +568,13 @@ const en: SiteContent = {
       "Variable conditions, batch to batch",
     ],
     pbrAlt:
-      "Tubular photobioreactor: parallel glass tubes stacked into a serpentine loop, culture circulating under a managed light panel, parameters set from a controller, and the phycocyanin drawn off the top.",
-    pbrTag: "Algacore",
+      "Illustration of a tubular photobioreactor: parallel glass tubes stacked into a serpentine loop, culture circulating under a managed light panel, parameters set from a controller, and the phycocyanin drawn off the top.",
+    pbrTag: "Algacore (planned)",
     pbrLabel: "Tubular photobioreactor",
     pbr: [
-      "Sealed from the outside environment",
-      "Light, CO2, temperature and flow under control",
-      "Consistency by design, batch to batch",
+      "Target: sealed from the outside environment",
+      "Target: light, CO2, temperature and flow under control",
+      "Target: consistency batch to batch",
     ],
   },
   science: {
@@ -425,14 +583,17 @@ const en: SiteContent = {
     stat1: "Protein content of dry <em>Arthrospira platensis</em> biomass (approximate)",
     stat2num: "up to ~15%",
     stat2: "Phycocyanin share of dry biomass (approximate)",
-    stat3: "Designed for closed-system cultivation",
-    accent: "Traceable purity, from the very first batch.",
+    stat3num: "E40+",
+    stat3: "Target color strength for phycocyanin concentrates",
+    statsNote:
+      "The first two figures come from the literature on Arthrospira platensis. The third is a design target. None of them is an Algacore analytical result.",
+    accent: "The goal: traceable purity from the very first batch.",
     sig: {
       eyebrow: "Optical signature",
       title: "Identifiable by its own light",
       body: "Phycocyanin absorbs light with a characteristic peak near 620 nm. That signature, and how sharp it is, is what separates food grade from pharmaceutical grade.",
       alt: "Phycocyanin absorption curve, with a peak near 620 nanometers.",
-      caption: "Illustrative absorption curve. Design targets.",
+      caption: "Illustrative absorption curve. Design targets, not measured results.",
       peakLabel: "≈ 620 nm",
       rows: [
         { k: "Absorption peak", v: "≈ 620 nm", note: "characteristic" },
@@ -449,7 +610,7 @@ const en: SiteContent = {
       {
         status: "In development",
         title: "Process technology",
-        body: "Engineering closed-photobioreactor cultivation and the extraction of phycocyanin.",
+        body: "Engineering closed-photobioreactor cultivation and the extraction of phycocyanin, alongside incorporating the company and raising the first round.",
       },
       {
         status: "Next stage",
@@ -473,7 +634,7 @@ const en: SiteContent = {
         photo: "/team/raul.jpg",
         role: "Co-founder · Science & operations",
         cred: "Pharmacist-Biochemist (FCF-USP) · Business Administration (FEA-USP)",
-        bio: "Leads the company's scientific and operational development, from the design of the cultivation and extraction process to brand positioning.",
+        bio: "Leads the project's scientific and operational development, from the design of the cultivation and extraction process to brand positioning.",
         mail: "raulbarros@algacore.com.br",
       },
       {
@@ -489,15 +650,17 @@ const en: SiteContent = {
   connect: {
     eyebrow: "Let's talk",
     title: "Build algacore with us",
-    lede: "We are forming our founding partnerships, with investors who back deep tech and partners ready to secure future supply.",
+    lede: "We are at the very beginning, in formation and raising our first round. We want to talk with people who follow deep tech closely, whether to invest further down the road or to help shape the product specification.",
     investTitle: "Investors",
     investBody:
-      "Back a B2B biotech building toward pharmaceutical-grade phycocyanin. Talk to the founders about the round and the roadmap.",
-    investCta: "Talk about investing →",
+      "Talk to the founders about the project, the technology and the plan. Nothing on this site is an investment offer.",
+    investCta: "Talk to the founders →",
     partnerTitle: "Partners & clients",
     partnerBody:
-      "Reserve future supply and help shape the spec with an LOI or MOU. Tell us about your application.",
+      "Tell us about your application and help shape the spec. There is no product available today, and no supply can be contracted at this stage.",
     partnerCta: "Talk about partnering →",
+    disclaimer:
+      "This site is for information only. It does not constitute an offer, invitation or solicitation to invest, nor a public offering of securities, and it is not a promise of any result or return. Algacore is in formation and does not sell any product.",
   },
   form: {
     interest: "I'm interested as",
@@ -508,14 +671,140 @@ const en: SiteContent = {
     company: "Company / organization",
     email: "Email",
     message: "Message",
+    ack: "I understand that Algacore is in formation, that this contact is not an offer of investment or of any product, and that no supply is available today.",
+    privacyNote: "We use your data only to reply to this message.",
+    privacyLink: "Privacy Policy",
     send: "Send",
     sending: "Sending...",
     confirm: "Thank you. Your message has been received and we will be in touch.",
     error: "We couldn't send that just now. Please try again or write to contato@algacore.com.br.",
   },
   footer: {
-    copy: "© 2026 ALGACORE Biotecnologia Ltda",
+    copy: "Algacore 2026",
     mail: "contato@algacore.com.br",
+    legal: "Legal notice",
+    privacy: "Privacy",
+  },
+  legalPage: {
+    title: "Legal notice",
+    updated: "Updated September 2026",
+    lede: "This notice sets out what Algacore is today and what this site is, so that nobody leaves with the wrong impression.",
+    sections: [
+      {
+        title: "What this site is",
+        body: [
+          "This site is informational material about a project under development. It sells nothing, takes no payment and forms no contract. The only interactive feature is a contact form.",
+        ],
+      },
+      {
+        title: "Corporate status",
+        body: [
+          "Algacore has not been incorporated. There is no registered company, no CNPJ (Brazilian taxpayer registry number) and no state or municipal registration tied to the name Algacore. The project is run by its two founders as individuals, and it is in formation and raising funds.",
+          "Nothing on this site should be read as a statement that a legal entity exists.",
+        ],
+      },
+      {
+        title: "Trademark",
+        body: [
+          "The Algacore name, symbol and logotype are signs in use by the project. No registration has been granted and no application has been filed with the INPI (Brazilian trademark office) to date. That is why the site uses no registered-trademark symbols.",
+        ],
+      },
+      {
+        title: "Forward-looking statements",
+        body: [
+          "Much of the content describes plans, engineering targets and intentions. These are projections, not results. They depend on incorporating the company, raising funds, technical development and regulatory approvals, and they may change or never happen.",
+        ],
+      },
+      {
+        title: "This is not an offering of securities",
+        body: [
+          "Nothing on this site is an offer, invitation or solicitation to invest, a public offering of securities, or a promise of any return.",
+          "Any conversation with investors happens off this site, individually and with the appropriate documentation.",
+        ],
+      },
+      {
+        title: "This is not a product offer",
+        body: [
+          "Algacore does not produce, sell or supply phycocyanin, spirulina or any other product at this stage. There is no stock, catalogue, price or delivery term, and no order can be accepted.",
+        ],
+      },
+      {
+        title: "Regulatory status",
+        body: [
+          "Algacore holds no operating authorization, health license, product registration or Good Manufacturing Practices certification from ANVISA or any other authority. References to ANVISA and to good practices describe the intended regulatory path, not a status already achieved.",
+        ],
+      },
+      {
+        title: "Images and figures",
+        body: [
+          "The illustrations of photobioreactors, ponds and absorption curves are conceptual representations. They are not photographs of Algacore facilities, nor our own analytical results. The spirulina composition figures come from the scientific literature on Arthrospira platensis.",
+        ],
+      },
+      {
+        title: "Contact",
+        body: ["Questions about this notice: contato@algacore.com.br."],
+      },
+    ],
+    back: "Back to home",
+  },
+  privacyPage: {
+    title: "Privacy Policy",
+    updated: "Updated September 2026",
+    lede: "How we handle the personal data you send us through the contact form on this site.",
+    sections: [
+      {
+        title: "Who the controller is",
+        body: [
+          "Until the company is incorporated, the data controllers are the project's founders, Raul Paes de Barros and Rodrigo Gaspar, as individuals. Once the company exists it will take that role, and this policy will be updated.",
+        ],
+      },
+      {
+        title: "What we collect",
+        body: [
+          "Only what you type into the contact form: name, company or organization, email, message, the interest you select and the page language.",
+          "We use no tracking cookies, we run no analytics tool and we build no browsing profile.",
+        ],
+      },
+      {
+        title: "What we use it for",
+        body: [
+          "To read your message and reply. Nothing beyond that. We do not sell, rent or hand your data to third parties for commercial purposes.",
+        ],
+      },
+      {
+        title: "Legal basis",
+        body: [
+          "Submitting the form is voluntary. Processing rests on your consent and on the legitimate interest in replying to a contact you started, under art. 7 of Brazilian Law 13.709/2018 (LGPD).",
+        ],
+      },
+      {
+        title: "Who the data is shared with",
+        body: [
+          "The form is processed by Formspree, a third-party service operating in the United States. When you submit, your data travels to and is stored on that service, which constitutes an international transfer of data.",
+          "Typefaces are loaded from Google Fonts, which exposes your IP address to Google when the page loads.",
+        ],
+      },
+      {
+        title: "How long we keep it",
+        body: [
+          "We keep your message for as long as the conversation is relevant and as long as the project record requires. You can ask us to delete it at any time.",
+        ],
+      },
+      {
+        title: "Your rights",
+        body: [
+          "The LGPD grants confirmation of processing, access, correction, anonymization, portability, deletion and withdrawal of consent, among others (art. 18).",
+          "To exercise any of them, write to contato@algacore.com.br. We reply within the statutory period.",
+        ],
+      },
+      {
+        title: "Contact",
+        body: [
+          "At this stage the data protection contacts are the founders themselves, at contato@algacore.com.br.",
+        ],
+      },
+    ],
+    back: "Back to home",
   },
   langToggleLabel: "Idioma / Language",
 };

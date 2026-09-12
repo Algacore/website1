@@ -28,6 +28,16 @@ export function homePath(lang: Lang): string {
   return lang === "pt" ? "/" : "/en/";
 }
 
+/** Legal notice path for a given language. */
+export function legalPath(lang: Lang): string {
+  return lang === "pt" ? "/aviso-legal/" : "/en/legal-notice/";
+}
+
+/** Privacy policy path for a given language. */
+export function privacyPath(lang: Lang): string {
+  return lang === "pt" ? "/privacidade/" : "/en/privacy/";
+}
+
 /** The other language, for the toggle. */
 export function otherLang(lang: Lang): Lang {
   return lang === "pt" ? "en" : "pt";

@@ -3,8 +3,12 @@ import Wordmark from "@/components/Wordmark.astro";
 interface Props {
   copy: string;
   mail: string;
+  legalLabel: string;
+  legalHref: string;
+  privacyLabel: string;
+  privacyHref: string;
 }
-const { copy, mail } = Astro.props;
+const { copy, mail, legalLabel, legalHref, privacyLabel, privacyHref } = Astro.props;
 ---
 
 <footer class="relative overflow-hidden bg-ink text-white py-14 grain">
@@ -25,6 +29,14 @@ const { copy, mail } = Astro.props;
       <a href={`mailto:${mail}`} class="text-phyco-300 text-[0.92rem] transition-opacity hover:opacity-75">
         {mail}
       </a>
+      <nav class="flex flex-wrap gap-x-4 gap-y-1 md:justify-end" aria-label="Legal">
+        <a href={legalHref} class="text-white/60 text-[0.92rem] transition-opacity hover:opacity-75">
+          {legalLabel}
+        </a>
+        <a href={privacyHref} class="text-white/60 text-[0.92rem] transition-opacity hover:opacity-75">
+          {privacyLabel}
+        </a>
+      </nav>
     </div>
   </div>
 </footer>

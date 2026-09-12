@@ -8,14 +8,28 @@ interface Props {
   langLabel: string;
   ptHref: string;
   enHref: string;
+  /** Home path prefix for the section anchors. Empty on the home page itself,
+      "/" or "/en/" on subpages, where the sections do not exist. */
+  basePath?: string;
+  /** Where the brand lockup points. Always the home of the active language. */
+  homeHref: string;
 }
 
-const links = (team: string, contact: string) => [
-  { href: "#team", label: team, soft: true },
-  { href: "#connect", label: contact, soft: false },
+const links = (team: string, contact: string, base: string) => [
+  { href: `${base}#team`, label: team, soft: true },
+  { href: `${base}#connect`, label: contact, soft: false },
 ];
 
-export default function Nav({ lang, navTeam, navContact, langLabel, ptHref, enHref }: Props) {
+export default function Nav({
+  lang,
+  navTeam,
+  navContact,
+  langLabel,
+  ptHref,
+  enHref,
+  basePath = "",
+  homeHref,
+}: Props) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [autoScroll, setAutoScroll] = useState(false);
@@ -72,7 +86,7 @@ export default function Nav({ lang, navTeam, navContact, langLabel, ptHref, enHr
     return cleanup;
   }, [autoScroll]);
 
-  const navLinks = links(navTeam, navContact);
+  const navLinks = links(navTeam, navContact, basePath);
   const light = !scrolled && !open;
 
   return (
@@ -150,7 +164,7 @@ export default function Nav({ lang, navTeam, navContact, langLabel, ptHref, enHr
 
         {/* Brand */}
         <a
-          href={lang === "pt" ? ptHref : enHref}
+          href={homeHref}
           aria-label="Algacore"
           className="col-start-2 justify-self-center inline-flex items-center"
         >

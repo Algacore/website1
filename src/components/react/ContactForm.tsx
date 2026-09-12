@@ -10,6 +10,9 @@ interface FormCopy {
   company: string;
   email: string;
   message: string;
+  ack: string;
+  privacyNote: string;
+  privacyLink: string;
   send: string;
   sending: string;
   confirm: string;
@@ -21,7 +24,15 @@ type Status = "idle" | "sending" | "ok" | "error";
 const baseField =
   "font-[inherit] text-base text-ink bg-card border border-line rounded-[var(--radius-sm-card)] px-3.5 py-3 transition-[border-color,box-shadow] duration-150 focus:outline-none focus:border-accent focus:shadow-[0_0_0_3px_var(--color-phyco-100)]";
 
-export default function ContactForm({ copy, lang }: { copy: FormCopy; lang: "pt" | "en" }) {
+export default function ContactForm({
+  copy,
+  lang,
+  privacyHref,
+}: {
+  copy: FormCopy;
+  lang: "pt" | "en";
+  privacyHref: string;
+}) {
   const formRef = useRef<HTMLFormElement | null>(null);
   const selectRef = useRef<HTMLSelectElement | null>(null);
   const [status, setStatus] = useState<Status>("idle");
@@ -105,6 +116,29 @@ export default function ContactForm({ copy, lang }: { copy: FormCopy; lang: "pt"
               </label>
               <textarea id="message" name="message" rows={5} required className={`${baseField} resize-y min-h-[120px]`} />
             </div>
+
+            {/* Required acknowledgement. Algacore is in formation: the visitor
+                confirms this contact is neither an investment nor a product
+                offer, and the flag rides along in the submission payload. */}
+            <label htmlFor="ack" className="flex items-start gap-3 text-[0.92rem] text-muted cursor-pointer">
+              <input
+                id="ack"
+                name="ack"
+                type="checkbox"
+                required
+                value="yes"
+                className="mt-[3px] h-4 w-4 shrink-0 accent-[var(--color-phyco-500)]"
+              />
+              <span>{copy.ack}</span>
+            </label>
+
+            <p className="text-[0.88rem] text-muted">
+              {copy.privacyNote}{" "}
+              <a href={privacyHref} className="text-accent-text underline underline-offset-[3px]">
+                {copy.privacyLink}
+              </a>
+              .
+            </p>
 
             {status === "error" && (
               <p className="text-[0.95rem] text-[#b3261e]" role="alert">
