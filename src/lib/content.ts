@@ -153,8 +153,8 @@ export interface SiteContent {
 
 const pt: SiteContent = {
   meta: {
-    title: "Ficocianina de alto grau | Algacore Biotecnologia B2B",
-    desc: "Projeto de biotecnologia B2B em constituição, desenvolvendo o cultivo de spirulina em fotobiorreatores fechados para a extração de ficocianina de alto grau no Brasil.",
+    title: "Algacore",
+    desc: "Algacore é um projeto de biotecnologia B2B em formação, desenvolvendo o cultivo de spirulina em fotobiorreatores fechados para extração de ficocianina de alto grau e rastreável no Brasil.",
   },
   a11y: { skip: "Pular para o conteúdo" },
   nav: { team: "Quem somos", contact: "Contato" },
@@ -326,7 +326,7 @@ const pt: SiteContent = {
   },
   connect: {
     eyebrow: "Vamos conversar",
-    title: "Construa a algacore conosco",
+    title: "Construa a Algacore conosco",
     lede: "Estamos no começo, em fase de constituição e captação. Queremos conversar com quem acompanha deep tech de perto, seja para investir mais adiante, seja para ajudar a definir a especificação do produto.",
     investTitle: "Investidores",
     investBody:
@@ -528,8 +528,8 @@ const pt: SiteContent = {
 
 const en: SiteContent = {
   meta: {
-    title: "High-Grade Phycocyanin | Algacore B2B Biotech",
-    desc: "A B2B biotechnology venture in formation, developing spirulina cultivation in closed photobioreactors for the extraction of high-grade phycocyanin in Brazil.",
+    title: "Algacore",
+    desc: "Algacore is a B2B biotechnology venture in formation, developing spirulina cultivation in closed photobioreactors for the extraction of high-grade, traceable phycocyanin in Brazil.",
   },
   a11y: { skip: "Skip to content" },
   nav: { team: "Who we are", contact: "Contact" },
@@ -700,7 +700,7 @@ const en: SiteContent = {
   },
   connect: {
     eyebrow: "Let's talk",
-    title: "Build algacore with us",
+    title: "Build Algacore with us",
     lede: "We are at the very beginning, in formation and raising our first round. We want to talk with people who follow deep tech closely, whether to invest further down the road or to help shape the product specification.",
     investTitle: "Investors",
     investBody:
