@@ -13,7 +13,7 @@ import type { Lang } from "@/i18n/config";
 export interface LegalDoc {
   title: string;
   updated: string;
-  lede: string;
+  lede?: string;
   sections: { title: string; body: string[] }[];
   back: string;
 }
@@ -405,7 +405,6 @@ const pt: SiteContent = {
   legalPage: {
     title: "Aviso legal",
     updated: "Atualizado em setembro de 2026",
-    lede: "Este aviso descreve o que a Algacore é hoje e o que este site é, para que ninguém saia daqui com a impressão errada.",
     sections: [
       {
         title: "Natureza deste site",
@@ -779,7 +778,6 @@ const en: SiteContent = {
   legalPage: {
     title: "Legal notice",
     updated: "Updated September 2026",
-    lede: "This notice sets out what Algacore is today and what this site is, so that nobody leaves with the wrong impression.",
     sections: [
       {
         title: "What this site is",
