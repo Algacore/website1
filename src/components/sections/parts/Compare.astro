@@ -19,9 +19,14 @@ const serpentine =
 const racewayLoop = "M82 88 H238 A42 42 0 0 1 238 172 H82 A42 42 0 0 1 82 88 Z";
 ---
 
-<div class="grid gap-4 md:grid-cols-2 md:gap-5" data-compare>
-  <!-- Open raceway pond: quiet, neutral, the legacy way. -->
-  <article class="card card--hover card--sheen md:p-7" data-panel="pond">
+<div class="grid gap-4 md:grid-cols-12 md:items-start md:gap-6" data-compare>
+  <!-- Open raceway pond: the legacy way. Deliberately demoted: no card
+       surface, no shadow, a bare hairline frame held back to 70% so the
+       Algacore panel is the only lit object in the pair. Hover restores it. -->
+  <article
+    class="md:col-span-5 relative rounded-[var(--radius-card)] border border-line p-[34px_30px] md:p-7 opacity-70 saturate-[0.55] transition-[opacity,filter] duration-500 ease-[var(--ease-brand)] hover:opacity-100 hover:saturate-100"
+    data-panel="pond"
+  >
     <svg viewBox="0 0 320 200" role="img" aria-label={pondAlt} class="w-full h-auto block mb-[18px] md:mb-5" style="aspect-ratio: 320/200">
       <g fill="none" stroke="#aeb6ba" stroke-width="1.5" stroke-linecap="round">
         <circle cx="40" cy="30" r="9" fill="#cbd3d7" stroke="none"></circle>
@@ -90,8 +95,17 @@ const racewayLoop = "M82 88 H238 A42 42 0 0 1 238 172 H82 A42 42 0 0 1 82 88 Z";
     </ul>
   </article>
 
-  <!-- Tubular photobioreactor: vivid, our way (accent border). -->
-  <article class="card card--hover card--sheen md:p-7 border-phyco-200!" data-panel="pbr">
+  <!-- Tubular photobioreactor: our way. Promoted to the wider column, on the
+       same phyco tint the reactor enclosure is drawn in, lifted off the page
+       and sitting in its own pool of light. -->
+  <div class="md:col-span-7 relative">
+    <div
+      class="pointer-events-none absolute -inset-5 z-0 bg-[radial-gradient(58%_52%_at_50%_45%,rgba(0,142,221,0.17),transparent_72%)]"
+      aria-hidden="true"></div>
+  <article
+    class="card card--hover card--sheen relative z-10 md:p-8 border-phyco-200! bg-phyco-50! shadow-[var(--shadow-float)]"
+    data-panel="pbr"
+  >
     <svg viewBox="0 0 320 200" role="img" aria-label={pbrAlt} class="w-full h-auto block mb-[18px] md:mb-5" style="aspect-ratio: 320/200">
       <rect x="8" y="60" width="38" height="80" rx="8" fill="#eaf8ff" stroke="#a5ddff" stroke-width="1.5"></rect>
       <g>
@@ -160,6 +174,7 @@ const racewayLoop = "M82 88 H238 A42 42 0 0 1 238 172 H82 A42 42 0 0 1 82 88 Z";
       ))}
     </ul>
   </article>
+  </div>
 </div>
 
 <style>

@@ -16,7 +16,7 @@ const { approach } = Astro.props;
       {
         approach.cards.map((card, i) => (
           <article
-            class={`card card--hover card--sheen reveal ${i === 2 ? "border-phyco-200!" : ""}`}
+            class={`card card--hover card--sheen reveal ${i >= 1 ? "card--glass " : ""}${i === 2 ? "border-phyco-200!" : ""}`}
             style={`--i:${i}`}
           >
             <h3 class={`text-xl tracking-[-0.01em] mb-4 ${i === 2 ? "text-accent-text" : ""}`}>
@@ -29,11 +29,15 @@ const { approach } = Astro.props;
     </div>
 
     <div class="block-gap-lg reveal">
-      <div class="max-w-[48ch] mb-[clamp(20px,3vw,30px)]">
-        <h3 class="font-semibold tracking-[-0.02em] mb-3 text-[clamp(1.4rem,2.6vw,1.85rem)]">
+      {/* Head sits right, over the Algacore column, so the eye lands on the
+          promoted panel rather than the legacy one. */}
+      <div class="max-w-[46ch] ml-auto mb-[clamp(20px,3vw,30px)]">
+        <h3 class="font-semibold tracking-[-0.02em] mb-3 text-right! text-[clamp(1.5rem,2.9vw,2.05rem)]">
           {approach.compareTitle}
         </h3>
-        <p class="text-muted max-w-[46ch] text-[1.02rem]">{approach.compareLede}</p>
+        {/* Justified, with the last line pushed right, so the lede reads as a
+            clean rectangle flush to both edges of the same box as the title. */}
+        <p class="text-muted text-justify! [text-align-last:right] text-[1.02rem]">{approach.compareLede}</p>
       </div>
 
       <Compare

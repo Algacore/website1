@@ -23,14 +23,12 @@ const photoFor = (key: string) => {
 
 <section id="team" class="section-pad relative atmos border-t border-line" data-theme="light">
   <div class="container">
-    <SectionHead chapter="05" eyebrow={team.eyebrow} title={team.title} />
-
-    <p class="text-muted mb-10 max-w-[56ch] text-[1.075rem] reveal">{team.lede}</p>
+    <SectionHead chapter="05" eyebrow={team.eyebrow} title={team.title} lede={team.lede} />
 
     <div class="grid gap-5 md:gap-6 md:grid-cols-2">
       {
         team.members.map((m, i) => (
-          <article class="card card--hover card--sheen reveal flex flex-col items-start group" style={`--i:${i}`}>
+          <article class:list={["card card--hover card--sheen reveal flex flex-col items-start group", i === 1 && "card--glass"]} style={`--i:${i}`}>
             <Image
               src={photoFor(m.photo)}
               alt={m.name}

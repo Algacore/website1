@@ -14,7 +14,7 @@ const { vision } = Astro.props;
 
     <div class="grid gap-5 md:gap-6 md:grid-cols-2">
       <!-- Lead -->
-      <article class="card card--hover card--sheen reveal md:col-span-2" style="--i:0">
+      <article class="card card--hover card--sheen card--glass reveal md:col-span-2" style="--i:0">
         <div class="max-w-[64ch] text-ink text-[clamp(1.1rem,1.7vw,1.32rem)] leading-relaxed" set:html={vision.p1} />
       </article>
 
@@ -38,8 +38,8 @@ const { vision } = Astro.props;
         title={vision.process}
         stages={vision.stages}
         notes={vision.flowNote}
+        footnote
       />
-      <p class="text-muted mt-5 text-[0.82rem] leading-relaxed">{vision.processNote}</p>
     </div>
   </div>
 </section>

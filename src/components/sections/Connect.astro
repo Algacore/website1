@@ -13,18 +13,19 @@ const { connect, form, lang } = Astro.props;
 
 <section id="connect" class="section-pad section-alt relative atmos" data-theme="light">
   <div class="container">
-    <SectionHead chapter="07" eyebrow={connect.eyebrow} title={connect.title} />
-    <p class="text-muted mb-10 max-w-[54ch] text-[1.075rem] reveal">{connect.lede}</p>
+    <SectionHead chapter="07" eyebrow={connect.eyebrow} title={connect.title} lede={connect.lede} />
 
     <div class="grid gap-5 md:grid-cols-2 md:gap-6">
       <article class="card card--hover card--sheen reveal flex flex-col items-start hover:border-phyco-200!" style="--i:0">
         <h3 class="text-[1.3rem] tracking-[-0.01em] mb-4">{connect.investTitle}</h3>
-        <p class="text-muted mb-[18px]">{connect.investBody}</p>
+        <p class="text-muted mb-[18px]">
+          {connect.investBody}<sup class="fn-mark" aria-hidden="true">*</sup>
+        </p>
         <a href="#interest-form" data-interest="investor" class="font-medium text-accent-text hover:underline underline-offset-[3px]">
           {connect.investCta}
         </a>
       </article>
-      <article class="card card--hover card--sheen reveal flex flex-col items-start hover:border-phyco-200!" style="--i:1">
+      <article class="card card--hover card--sheen card--glass reveal flex flex-col items-start hover:border-phyco-200!" style="--i:1">
         <h3 class="text-[1.3rem] tracking-[-0.01em] mb-4" set:html={connect.partnerTitle} />
         <p class="text-muted mb-[18px]">{connect.partnerBody}</p>
         <a href="#interest-form" data-interest="partner" class="font-medium text-accent-text hover:underline underline-offset-[3px]">
@@ -37,8 +38,8 @@ const { connect, form, lang } = Astro.props;
       <ContactForm copy={form} lang={lang} privacyHref={privacyPath(lang)} />
     </div>
 
-    <p class="reveal text-muted mt-6 max-w-[var(--maxw-narrow)] text-[0.82rem] leading-relaxed">
-      {connect.disclaimer}
+    <p class="reveal fineprint block-gap-lg mb-[clamp(12px,3vw,32px)] mx-auto max-w-[var(--maxw-narrow)] text-center text-balance">
+      <span class="not-italic" aria-hidden="true">*&nbsp;</span>{connect.disclaimer}
     </p>
   </div>
 </section>

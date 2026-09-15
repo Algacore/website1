@@ -3,19 +3,34 @@ interface Props {
   chapter: string;
   eyebrow: string;
   title: string;
+  /** Optional standfirst. Rendered inside the header so it reads with the
+      title instead of floating against the content below it. */
+  lede?: string;
   center?: boolean;
 }
-const { chapter, eyebrow, title, center = false } = Astro.props;
+const { chapter, eyebrow, title, lede, center = false } = Astro.props;
+
+// The mark gets heavier and bluer as the chapters run: 01 is almost cyano and
+// almost invisible, 07 carries the phyco. Seven copies of one decoration would
+// be wallpaper; a progression is the pigment showing up.
+const step = Math.min(Math.max(parseInt(chapter, 10) || 1, 1), 7);
+const alpha = (0.055 + ((step - 1) / 6) * 0.06).toFixed(3);
 ---
 
-<header class:list={["mb-14 md:mb-16 reveal", center && "text-center"]}>
-  <span class="block font-semibold leading-none tracking-[-0.03em] text-n-400 mb-3 text-[clamp(2.6rem,8vw,4.25rem)]">
-    {chapter}
-  </span>
-  <p class="text-[0.8125rem] font-medium tracking-[0.08em] uppercase text-accent-text mb-3.5">
-    {eyebrow}
-  </p>
-  <h2 class:list={["font-semibold tracking-[-0.02em] max-w-[22ch] text-[clamp(1.6rem,4.5vw,2.4rem)]", center && "mx-auto"]}>
-    {title}
-  </h2>
-</header>
+<div class="chapter-head" style={`--chapter-a:${alpha}`}>
+  <span class="chapter-mark" aria-hidden="true">{chapter}</span>
+
+  <header class:list={["mb-14 md:mb-16 reveal", center && "text-center"]}>
+    <p class="text-[0.8125rem] font-medium tracking-[0.08em] uppercase text-accent-text mb-3.5">
+      {eyebrow}
+    </p>
+    <h2 class:list={["font-semibold tracking-[-0.02em] max-w-[22ch] text-[clamp(1.6rem,4.5vw,2.4rem)]", center && "mx-auto"]}>
+      {title}
+    </h2>
+    {lede && (
+      <p class:list={["text-muted mt-5 max-w-[56ch] text-[1.075rem]", center && "mx-auto"]}>
+        {lede}
+      </p>
+    )}
+  </header>
+</div>

@@ -23,12 +23,10 @@ export interface SiteContent {
   a11y: { skip: string };
   nav: { team: string; contact: string };
   hero: {
-    eyebrow: string;
     title: string; // may contain <br> and <em>
     sub: string;
     ctaInvest: string;
     ctaPartner: string;
-    proofLabel: string;
     proof: string[];
   };
   band: { tagline: string };
@@ -46,7 +44,6 @@ export interface SiteContent {
     stages: [string, string, string];
     flowEyebrow: string;
     flowNote: [string, string, string];
-    processNote: string;
     c1title: string;
     c1body: string;
     c2title: string;
@@ -75,14 +72,13 @@ export interface SiteContent {
     stat2: string;
     stat3num: string;
     stat3: string;
-    statsNote: string;
+
     accent: string;
     sig: {
       eyebrow: string;
       title: string;
       body: string;
       alt: string;
-      caption: string;
       peakLabel: string;
       rows: { k: string; v: string; note: string }[];
     };
@@ -159,13 +155,11 @@ const pt: SiteContent = {
   a11y: { skip: "Pular para o conteúdo" },
   nav: { team: "Quem somos", contact: "Contato" },
   hero: {
-    eyebrow: "Biotecnologia B2B, em constituição",
     title: "Construindo o futuro<br>da <em>ficocianina</em>",
     sub: "Estamos desenvolvendo o cultivo de spirulina em fotobiorreatores fechados, em escala industrial, para extrair ficocianina de alto grau.",
     ctaInvest: "Para investidores",
     ctaPartner: "Para parceiros",
-    proofLabel: "Princípios de projeto",
-    proof: ["Cultivo fechado", "Rastreabilidade por lote", "Produção pretendida no Brasil"],
+    proof: ["Cultivo fechado", "Rastreabilidade por lote", "Produzido no Brasil"],
   },
   band: {
     tagline:
@@ -177,12 +171,12 @@ const pt: SiteContent = {
     lede: "Vários movimentos de mercado convergem para o mesmo ponto, e todos pedem um azul natural, puro e rastreável.",
     points: [
       {
-        title: "Pressão sobre corantes sintéticos",
+        title: "Pressão sobre sintéticos",
         body: "Corantes azuis sintéticos derivados de petróleo enfrentam escrutínio regulatório crescente em diversos mercados.",
       },
       {
-        title: "Demanda por rótulo limpo",
-        body: "Alimentos, bebidas e cosméticos migram para ingredientes de origem natural e rótulo limpo.",
+        title: "Demanda por clean-label",
+        body: "Alimentos, bebidas e cosméticos migram para ingredientes de origem natural e clean-label.",
       },
       {
         title: "O azul natural é raro",
@@ -197,7 +191,7 @@ const pt: SiteContent = {
   vision: {
     eyebrow: "A ambição",
     title: "Uma molécula, conduzida rumo ao padrão farmacêutico",
-    p1: "A <em>ficocianina</em> é o pigmento-proteína azul da spirulina, um corante de origem natural e rótulo limpo, valorizado em alimentos, cosméticos e, cada vez mais, nas ciências da vida. Quase tudo que chega ao mercado hoje é grau alimentício. Estamos construindo o processo para entregá-la em pureza farmacêutica, em escala industrial.",
+    p1: "A <em>ficocianina</em> é o pigmento-proteína azul da spirulina, um corante de origem natural e clean-label, valorizado em alimentos, cosméticos e, cada vez mais, nas ciências da vida. Quase tudo que chega ao mercado hoje é grau alimentício. Estamos construindo o processo para entregá-la em pureza farmacêutica, em escala industrial.",
     process: "Do cultivo à extração",
     stages: ["Fotobiorreator fechado", "Biomassa de spirulina", "Ficocianina"],
     flowEyebrow: "O processo",
@@ -206,8 +200,6 @@ const pt: SiteContent = {
       "Colhida e concentrada, lote a lote",
       "Extraída e purificada",
     ],
-    processNote:
-      "Fluxo pretendido. Nenhuma unidade produtiva está em operação nesta fase.",
     c1title: "Por que ficocianina",
     c1body:
       "O azul é uma das cores mais raras na natureza, e a indústria recorreu por décadas a corantes sintéticos derivados de petróleo, hoje sob pressão regulatória crescente. A ficocianina é um azul de origem natural, solúvel em água, reconhecido como corante seguro por agências como ANVISA, FDA e União Europeia.",
@@ -232,7 +224,7 @@ const pt: SiteContent = {
         body: "A operação é planejada para o Brasil, sob o marco regulatório da ANVISA e perto da demanda sul-americana. Nenhuma licença ou certificação foi obtida até aqui.",
       },
     ],
-    compareTitle: "Vaso fechado, não tanque aberto",
+    compareTitle: "Sistema Fechado",
     compareLede:
       "Um fotobiorreator é um vaso fechado para cultivar microalgas sob condições controladas. A maior parte da spirulina ainda é cultivada em tanques abertos, expostos ao ambiente. Nós seguimos o caminho fechado. A coluna da Algacore descreve a arquitetura pretendida, não uma instalação existente.",
     pondAlt:
@@ -246,7 +238,7 @@ const pt: SiteContent = {
     ],
     pbrAlt:
       "Ilustração de um fotobiorreator tubular: tubos de vidro paralelos e empilhados num circuito serpentina, com a cultura circulando sob um painel de luz controlado, parâmetros definidos no controlador e a ficocianina retirada no topo.",
-    pbrTag: "Algacore (projeto)",
+    pbrTag: "Algacore",
     pbrLabel: "Fotobiorreator tubular",
     pbr: [
       "Alvo: vedação ao ambiente externo",
@@ -262,15 +254,12 @@ const pt: SiteContent = {
     stat2: "Participação da ficocianina na biomassa seca (aproximada)",
     stat3num: "E40+",
     stat3: "Força de cor alvo para os concentrados de ficocianina",
-    statsNote:
-      "Os dois primeiros valores vêm da literatura sobre Arthrospira platensis. O terceiro é alvo de projeto. Nenhum deles é resultado analítico da Algacore.",
     accent: "O objetivo: pureza rastreável desde o primeiro lote.",
     sig: {
       eyebrow: "Assinatura óptica",
       title: "Identificável pela própria luz",
       body: "A ficocianina absorve luz com um pico característico próximo de 620 nm. É essa assinatura, e a nitidez dela, que separa o grau alimentício do grau farmacêutico.",
       alt: "Curva de absorção da ficocianina, com pico próximo de 620 nanômetros.",
-      caption: "Curva ilustrativa de absorção. Alvos de projeto, não resultados medidos.",
       peakLabel: "≈ 620 nm",
       rows: [
         { k: "Pico de absorção", v: "≈ 620 nm", note: "característico" },
@@ -330,14 +319,14 @@ const pt: SiteContent = {
     lede: "Estamos no começo, em fase de constituição e captação. Queremos conversar com quem acompanha deep tech de perto, seja para investir mais adiante, seja para ajudar a definir a especificação do produto.",
     investTitle: "Investidores",
     investBody:
-      "Converse com os fundadores sobre o projeto, a tecnologia e o plano. Nada neste site é oferta de investimento.",
+      "Converse com os fundadores sobre o projeto, a tecnologia e o plano.",
     investCta: "Falar com os fundadores →",
     partnerTitle: "Parceiros & clientes",
     partnerBody:
-      "Conte-nos sua aplicação e ajude a definir a especificação. Não há produto disponível hoje, e nenhum fornecimento pode ser contratado nesta fase.",
+      "Conte-nos sua aplicação e ajude a definir a especificação.",
     partnerCta: "Falar sobre parceria →",
     disclaimer:
-      "Este site tem caráter exclusivamente informativo. Não constitui oferta, convite ou solicitação de investimento, nem oferta pública de valores mobiliários, e não representa promessa de resultado ou rentabilidade. A Algacore está em fase de constituição e não comercializa produtos.",
+      "Os números e curvas apresentados vêm da literatura científica sobre Arthrospira platensis ou são alvos de projeto. Nenhum deles é resultado analítico da Algacore, e nenhuma ilustração retrata uma instalação nossa. Este site tem caráter exclusivamente informativo. Não constitui oferta, convite ou solicitação de investimento, nem oferta pública de valores mobiliários, e não representa promessa de resultado ou rentabilidade. A Algacore está em fase de constituição, não opera unidade produtiva e não comercializa produtos.",
   },
   form: {
     interest: "Tenho interesse como",
@@ -533,13 +522,11 @@ const en: SiteContent = {
   a11y: { skip: "Skip to content" },
   nav: { team: "Who we are", contact: "Contact" },
   hero: {
-    eyebrow: "B2B biotechnology, in formation",
     title: "Building the future<br>of <em>phycocyanin</em>",
     sub: "We are developing industrial-scale spirulina cultivation in closed photobioreactors, for the extraction of high-grade phycocyanin.",
     ctaInvest: "For investors",
     ctaPartner: "For partners",
-    proofLabel: "Design principles",
-    proof: ["Closed cultivation", "Batch traceability", "Production planned in Brazil"],
+    proof: ["Closed cultivation", "Batch traceability", "Made in Brazil"],
   },
   band: {
     tagline:
@@ -580,7 +567,6 @@ const en: SiteContent = {
       "Harvested and concentrated, batch by batch",
       "Extracted and purified",
     ],
-    processNote: "Intended process. No production unit is operating at this stage.",
     c1title: "Why phycocyanin",
     c1body:
       "Blue is one of the rarest colors in nature, and industry leaned for decades on synthetic dyes derived from petroleum, now under growing regulatory pressure. Phycocyanin is a blue of natural origin, water-soluble, recognized as a safe colorant by agencies including ANVISA, the FDA and the European Union.",
@@ -605,7 +591,7 @@ const en: SiteContent = {
         body: "The operation is planned for Brazil, under the ANVISA regulatory framework and close to South American demand. No license or certification has been obtained to date.",
       },
     ],
-    compareTitle: "Sealed vessel, not open pond",
+    compareTitle: "Closed System",
     compareLede:
       "A photobioreactor is a closed vessel for growing microalgae under controlled conditions. Most spirulina is still grown in open ponds, exposed to the environment. We take the closed path. The Algacore column describes the intended architecture, not an existing facility.",
     pondAlt:
@@ -619,7 +605,7 @@ const en: SiteContent = {
     ],
     pbrAlt:
       "Illustration of a tubular photobioreactor: parallel glass tubes stacked into a serpentine loop, culture circulating under a managed light panel, parameters set from a controller, and the phycocyanin drawn off the top.",
-    pbrTag: "Algacore (planned)",
+    pbrTag: "Algacore",
     pbrLabel: "Tubular photobioreactor",
     pbr: [
       "Target: sealed from the outside environment",
@@ -635,15 +621,12 @@ const en: SiteContent = {
     stat2: "Phycocyanin share of dry biomass (approximate)",
     stat3num: "E40+",
     stat3: "Target color strength for phycocyanin concentrates",
-    statsNote:
-      "The first two figures come from the literature on Arthrospira platensis. The third is a design target. None of them is an Algacore analytical result.",
     accent: "The goal: traceable purity from the very first batch.",
     sig: {
       eyebrow: "Optical signature",
       title: "Identifiable by its own light",
       body: "Phycocyanin absorbs light with a characteristic peak near 620 nm. That signature, and how sharp it is, is what separates food grade from pharmaceutical grade.",
       alt: "Phycocyanin absorption curve, with a peak near 620 nanometers.",
-      caption: "Illustrative absorption curve. Design targets, not measured results.",
       peakLabel: "≈ 620 nm",
       rows: [
         { k: "Absorption peak", v: "≈ 620 nm", note: "characteristic" },
@@ -703,14 +686,14 @@ const en: SiteContent = {
     lede: "We are at the very beginning, in formation and raising our first round. We want to talk with people who follow deep tech closely, whether to invest further down the road or to help shape the product specification.",
     investTitle: "Investors",
     investBody:
-      "Talk to the founders about the project, the technology and the plan. Nothing on this site is an investment offer.",
+      "Talk to the founders about the project, the technology and the plan.",
     investCta: "Talk to the founders →",
     partnerTitle: "Partners & clients",
     partnerBody:
-      "Tell us about your application and help shape the spec. There is no product available today, and no supply can be contracted at this stage.",
+      "Tell us about your application and help shape the spec.",
     partnerCta: "Talk about partnering →",
     disclaimer:
-      "This site is for information only. It does not constitute an offer, invitation or solicitation to invest, nor a public offering of securities, and it is not a promise of any result or return. Algacore is in formation and does not sell any product.",
+      "The figures and curves shown come from the scientific literature on Arthrospira platensis or are design targets. None of them is an Algacore analytical result, and no illustration depicts a facility of ours. This site is for information only. It does not constitute an offer, invitation or solicitation to invest, nor a public offering of securities, and it is not a promise of any result or return. Algacore is in formation, operates no production unit and sells no product.",
   },
   form: {
     interest: "I'm interested as",

@@ -1,11 +1,10 @@
 ---
 interface Props {
   alt: string;
-  caption: string;
   peakLabel: string;
 }
 
-const { alt, caption, peakLabel } = Astro.props;
+const { alt, peakLabel } = Astro.props;
 
 const CURVE =
   "M20 196 C140 192 260 184 330 172 C380 160 405 110 431 40 C458 104 490 152 528 174 C552 184 568 188 580 190";
@@ -74,9 +73,6 @@ const GLOW =
       style="filter: drop-shadow(0 0 7px rgba(115,197,255,0.9)); transform-box: fill-box; transform-origin: center"
       class="sig-dot"></circle>
   </svg>
-  <figcaption class="mt-1 text-[0.74rem] text-white/55" style="letter-spacing: 0.01em">
-    {caption}
-  </figcaption>
 </div>
 
 <style>

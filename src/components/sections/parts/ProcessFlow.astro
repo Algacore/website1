@@ -4,9 +4,11 @@ interface Props {
   title: string;
   stages: string[];
   notes: string[];
+  /** Renders the section's footnote asterisk after the eyebrow. */
+  footnote?: boolean;
 }
 
-const { eyebrow, title, stages, notes } = Astro.props;
+const { eyebrow, title, stages, notes, footnote = false } = Astro.props;
 ---
 
 <div
@@ -14,7 +16,9 @@ const { eyebrow, title, stages, notes } = Astro.props;
   data-processflow
 >
   <div class="relative z-[1]">
-    <p class="eyebrow eyebrow--onDark mb-3">{eyebrow}</p>
+    <p class="eyebrow eyebrow--onDark mb-3">
+      {eyebrow}{footnote && <sup class="fn-mark fn-mark--eyebrow" aria-hidden="true">*</sup>}
+    </p>
     <h3 class="font-display text-white text-[clamp(1.5rem,3vw,2.1rem)] tracking-[-0.02em] mb-[clamp(36px,5vw,56px)] max-w-[24ch]">
       {title}
     </h3>

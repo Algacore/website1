@@ -28,31 +28,23 @@ const { hero } = Astro.props;
   </svg>
 
   <div class="relative z-[2] w-full max-w-[var(--maxw)] mx-auto px-[var(--gutter)] min-w-0">
-    <!-- Eyebrow: small mark glyph + positioning line. -->
-    <div class="hero-rise flex items-center gap-3 mb-[clamp(26px,4vw,44px)]" style="--d:0">
-      <svg class="h-[18px] w-auto text-phyco-300" style="aspect-ratio:1015/664.5" aria-hidden="true">
-        <use href="#mark"></use>
-      </svg>
-      <span class="eyebrow eyebrow--onDark">{hero.eyebrow}</span>
-    </div>
-
     <!-- Editorial split: title holds the left, support copy offsets lower-right. -->
     <div class="grid gap-x-[clamp(32px,5vw,72px)] gap-y-[clamp(28px,4vw,40px)] lg:grid-cols-[1.5fr_1fr] lg:items-end">
       <h1
         class="hero-rise font-display text-white max-w-[14ch] text-[clamp(2.7rem,7.4vw,5.6rem)] leading-[1.02] tracking-[-0.025em]"
-        style="--d:90"
+        style="--d:0"
         set:html={hero.title}
       />
 
       <div class="lg:pb-[8px]">
         <p
           class="hero-rise font-light leading-relaxed text-white/82 max-w-[44ch] text-[clamp(1.08rem,2.2vw,1.28rem)]"
-          style="--d:180"
+          style="--d:90"
         >
           {hero.sub}
         </p>
 
-        <div class="hero-rise flex flex-wrap gap-3.5 mt-[clamp(26px,3.5vw,36px)]" style="--d:260">
+        <div class="hero-rise flex flex-wrap gap-3.5 mt-[clamp(26px,3.5vw,36px)]" style="--d:170">
           <MagneticButton href="#connect" variant="solid" dataInterest="investor">
             {hero.ctaInvest}
           </MagneticButton>
@@ -64,9 +56,8 @@ const { hero } = Astro.props;
     </div>
 
     <!-- Credibility strip: full-width baseline rail of qualitative proof. -->
-    <div class="hero-rise mt-[clamp(44px,6vw,76px)]" style="--d:360">
-      <hr class="rule-fade rule-fade--onDark mb-[18px]" />
-      <p class="eyebrow eyebrow--onDark text-center mb-[14px]">{hero.proofLabel}</p>
+    <div class="hero-rise mt-[clamp(44px,6vw,76px)]" style="--d:260">
+      <hr class="rule-fade rule-fade--onDark mb-[22px]" />
       <ul class="list-none m-0 p-0 flex flex-wrap justify-center gap-x-[clamp(20px,4vw,44px)] gap-y-3">
         {hero.proof.map((p) => (
           <li class="proof-chip">{p}</li>

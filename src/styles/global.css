@@ -6,6 +6,10 @@
    ============================================================ */
 @import "@fontsource-variable/outfit";
 @import "@fontsource-variable/fraunces";
+/* Fraunces ships its italic as a separate face. Without this import the
+   `em` rule below (and any other italic serif) renders as a synthesised
+   oblique: the upright letterforms sheared, not the true italic cut. */
+@import "@fontsource-variable/fraunces/wght-italic.css";
 @import "tailwindcss";
 
 @theme {
@@ -130,7 +134,6 @@ img {
   display: block;
 }
 h1, h2, h3 {
-  margin: 0;
   line-height: 1.15;
 }
 /* Display headlines: Fraunces, light, tight. Optical sizing lets the large
@@ -150,13 +153,21 @@ h3 {
   text-align: justify;
 }
 p {
-  margin: 0;
   text-align: justify;
 }
-p + p {
-  margin-top: 1.1em;
-}
+/* Margin resets stay inside @layer base. Unlayered they outrank every
+   Tailwind utility, which silently killed the mb-* spacing set on
+   headings and ledes throughout the site. */
 @layer base {
+  h1,
+  h2,
+  h3,
+  p {
+    margin: 0;
+  }
+  p + p {
+    margin-top: 1.1em;
+  }
   a {
     color: var(--color-accent-text);
     text-decoration: none;
@@ -415,6 +426,133 @@ em {
   pointer-events: none;
 }
 
+/* ============================================================
+   CHAPTER MARK + GLASS
+   The section numeral left the header and became the ground the section sits
+   on: set large, flush with the right edge of the content column, and dropped
+   so its last third passes under the first card. That card is glass, so the
+   digit does not stop at the card edge, it goes soft and carries on. The line
+   between sharp and blurred is the only thing marking where the card begins.
+
+   Seven sections carrying the same device would read as wallpaper, so the
+   numeral is not the same seven times: alpha and hue climb from chapter 01 to
+   07, cyano turning into phyco. Biomass becoming pigment, which is the thing
+   the whole site is about.
+   ============================================================ */
+:root {
+  /* Big enough to read as ground rather than as a label. */
+  --chapter-size: clamp(12rem, 30vw, 28rem);
+  /* The header's own bottom margin (mb-14 / md:mb-16), which is also the
+     distance from the bottom of .chapter-head to the top edge of the card. */
+  --chapter-gap: 56px;
+  /* Where the baseline lands relative to that card edge. Negative on phones:
+     no overlap, no backdrop-filter, the digits just rest above the card. */
+  --chapter-drop: -6px;
+  /* Slack around the glyphs. `background-clip: text` paints only inside the
+     element's own box, so ink that pokes out of it gets painted with nothing
+     and comes out sliced. Trimmed leading puts the box bottom exactly on the
+     baseline, which shears the round feet off 0/3/6/8/9. This padding grows
+     the paint box; `right` and `bottom` give back exactly what it added, so
+     the digits themselves do not move a pixel. Sized off the worst case, the
+     4 in chapter 04, whose ink runs 0.148em past the box on the right. */
+  --chapter-ink: 0.2em;
+}
+@media (min-width: 768px) {
+  :root {
+    --chapter-gap: 64px;
+    /* Digit ink runs ~0.73em tall, so 0.24em is the bottom third of it. */
+    --chapter-drop: 0.24em;
+  }
+}
+
+.chapter-head {
+  position: relative;
+}
+
+/* The mark's paint box is wider than its ink and hangs past the content
+   column, so a numbered section clips its own overflow. `clip` rather than
+   `hidden`: it takes no scroll container, so the vertical axis stays visible
+   and nothing here has to become scrollable. */
+section:has(.chapter-head) {
+  overflow-x: clip;
+}
+
+.chapter-mark {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  /* Flush with the content column, same edge the cards below it end on. */
+  right: calc(-1 * var(--chapter-ink));
+  bottom: calc(-1 * (var(--chapter-gap) + var(--chapter-drop) + var(--chapter-ink)));
+  padding: var(--chapter-ink);
+  font-size: var(--chapter-size);
+  font-weight: 600;
+  /* Trimmed leading, so the box bottom sits on the baseline and `bottom`
+     measures from the digits' feet. */
+  line-height: 0.74;
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+  background-image: linear-gradient(
+    166deg,
+    rgba(15, 46, 61, var(--chapter-a, 0.06)) 0%,
+    rgba(0, 142, 221, calc(var(--chapter-a, 0.06) * 1.35)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Phones: the numeral drops in size and a third of its weight, so a single
+   column of copy still owns the screen. */
+@media (max-width: 767px) {
+  :root {
+    --chapter-size: clamp(8rem, 34vw, 12rem);
+  }
+  .chapter-mark {
+    opacity: 0.66;
+  }
+}
+
+/* The one card the numeral passes under. White enough to stay a card, thin
+   enough that the digit reads through it. The blur is doing real work here:
+   there is something behind it. Only from 768px up, which is the only place
+   the numeral drops far enough to need it. */
+@media (min-width: 768px) {
+  .card--glass {
+    background: rgba(255, 255, 255, 0.46);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    backdrop-filter: blur(20px) saturate(1.4);
+  }
+  /* On a white section the card is meant to read a shade below the ground.
+     Cyano 100 at the same alpha lands on that shade once the white behind it
+     is mixed back in, so the tonal step survives the transparency. */
+  .section-alt .card--glass {
+    background: rgba(240, 245, 247, 0.46);
+  }
+}
+
+/* No backdrop-filter, no glass, so nothing is allowed to cross the card. */
+@supports not ((backdrop-filter: blur(4px)) or (-webkit-backdrop-filter: blur(4px))) {
+  :root {
+    --chapter-drop: -6px;
+  }
+  .card--glass {
+    background: var(--color-card);
+  }
+  .section-alt .card--glass {
+    background: var(--color-n-50);
+  }
+}
+
+@media (forced-colors: active) {
+  .chapter-mark {
+    display: none;
+  }
+}
+
 /* Deep cyano grounds: shared atmosphere + grain hooks live on .grain already. */
 .deep-ground {
   position: relative;
@@ -512,6 +650,68 @@ html:not(.js) .conduit[data-on="0"]::before {
 }
 .rule-fade--onDark {
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18) 18%, rgba(255, 255, 255, 0.18) 82%, transparent);
+}
+
+/* Fineprint: the non-offer disclaimer, sourcing notes and privacy lines.
+   Legally required text that should sit quietly under the content instead of
+   shouting at it. Set in the true Fraunces italic, the same editorial voice the
+   `em` rule gives the molecule names, so the asides read as one register. The
+   thin strokes of a high-contrast serif already look lighter than Outfit, which
+   is why the weight can sit at a normal 400 and the colour can stay at
+   --color-muted: anything lighter drops below 4.5:1 on --page, and a disclaimer
+   nobody can read is worse than no disclaimer. Fraunces carries a large x-height,
+   so the size drops a touch against the old Outfit setting. */
+.fineprint {
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 0;
+  color: var(--color-muted);
+  text-wrap: pretty;
+}
+.fineprint--onDark {
+  color: rgba(255, 255, 255, 0.66);
+}
+
+/* ---------- Footnote marker ----------
+   One asterisk per section, pointing at the single legal note that sits under
+   the contact form. Deliberately quiet: it marks the claim without competing
+   with it, and it is decorative only (no anchor), so it stays out of the
+   accessibility tree. Screen readers still get the full note in #connect. */
+.fn-mark {
+  font-size: 0.68em;
+  line-height: 0;
+  vertical-align: super;
+  margin-left: 0.14em;
+  color: var(--color-muted);
+  opacity: 0.75;
+  user-select: none;
+}
+.fn-mark--onDark {
+  color: rgba(255, 255, 255, 0.55);
+  opacity: 1;
+}
+/* On a display heading the asterisk never sits right: the glyph is drawn high
+   in its own em box, the super raise pushes it off the cap line, and at that
+   size it reads as a blot next to the word. It rides the eyebrow instead,
+   where the small uppercase setting absorbs it. */
+.fn-mark--eyebrow {
+  font-size: 0.85em;
+  line-height: 0;
+  vertical-align: baseline;
+  position: relative;
+  top: -0.05em;
+  /* The eyebrow's own 0.1em tracking already sits after the last letter, so
+     pull the mark back in rather than adding a second gap. */
+  margin-left: -0.04em;
+  letter-spacing: 0;
+  color: inherit;
+  opacity: 0.7;
+}
+.fineprint a {
+  font-style: inherit;
 }
 
 /* ---------- Reduced motion ---------- */

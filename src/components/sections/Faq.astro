@@ -22,13 +22,11 @@ const jsonLd = {
 
 <section id="faq" class="section-pad relative atmos border-t border-line" data-theme="light">
   <div class="container">
-    <SectionHead chapter="06" eyebrow={faq.eyebrow} title={faq.title} />
-
-    <p class="text-muted mb-10 max-w-[56ch] text-[1.075rem] reveal">{faq.lede}</p>
+    <SectionHead chapter="06" eyebrow={faq.eyebrow} title={faq.title} lede={faq.lede} />
 
     <div class="max-w-[var(--maxw-narrow)] grid gap-3">
       {faq.items.map((item, i) => (
-        <details class="faq-item card card--sheen reveal p-0!" style={`--i:${i}`}>
+        <details class:list={["faq-item card card--sheen reveal p-0!", i === 0 && "card--glass"]} style={`--i:${i}`}>
           <summary class="faq-q">
             <span>{item.q}</span>
             <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
