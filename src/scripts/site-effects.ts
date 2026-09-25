@@ -118,6 +118,17 @@ function init() {
     if (!a) return;
     const id = a.getAttribute("href");
     if (!id || id === "#") return;
+    // #top targets the fixed header, whose rect is always pinned at
+    // viewport y=0, so scrolling "to" it via its element only nudges by
+    // the offset instead of reaching the actual top of the document.
+    if (id === "#top") {
+      if (lenis) {
+        ev.preventDefault();
+        lenis.scrollTo(0, { offset: 0 });
+        history.replaceState(null, "", id);
+      }
+      return;
+    }
     const target = document.querySelector(id);
     if (target && lenis) {
       ev.preventDefault();
